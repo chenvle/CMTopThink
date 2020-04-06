@@ -1,0 +1,90 @@
+{extend name="base" /}
+{block name="body"}
+<form class="layui-form" action="" lay-filter="user_form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色</label>
+        <div class="layui-input-block">
+            {volist name="roles" id="vo"}
+            <?php
+                        $value = false;
+                    ?>
+            {volist name="info.roles" id="v"}
+            <?php
+                            if($v['id']==$vo['id']){
+                                $value = true;
+                            }
+                        ?>
+            {/volist}
+            <input type="checkbox" name="Roles[{$vo.id}]" lay-skin="primary" title="{$vo.name}" value="{$vo.id}" {if $value}checked=""{/if}>
+            {/volist}
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">账号</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="账号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="password" autocomplete="off" placeholder="留空则不修改" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">昵称</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="昵称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="Sex" value="1" title="男">
+            <input type="radio" name="Sex" value="2" title="女">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="script"}
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index','form','curl'],function () {
+        let $ = layui.jquery,
+            curl = layui.curl,
+            form = layui.form;
+
+        let iframe = parent.layer.getFrameIndex(window.name);
+
+        form.on('submit(add)', function(data){
+            data.field.id='{$info.id}';
+            curl.ajax('/api.user/update','post',data.field,function (res) {
+                layer.msg(res.msg);
+                if(res.status){
+                    setTimeout(function () {
+                        parent.layer.close(iframe);
+                        parent.location.reload();
+                    },1000)
+                }
+            });
+            return false;
+        });
+
+        form.val('user_form', {
+            'username': '{$info.username}',
+            'name': '{$info.name}',
+            'Sex': '{$info.Sex}'
+        });
+
+    });
+</script>
+{/block}

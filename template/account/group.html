@@ -1,0 +1,87 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-row">
+    <div class="layui-col-md5" style="text-align: right;">
+        <div class="layui-input-inline" style="width: 300px;">
+            <input type="text" name="k" id="key" value="" placeholder="名称" class="layui-input key">
+        </div>
+        <button type="button" class="layui-btn sou">添加</button>
+    </div>
+    <div class="line_20"></div>
+    <div class="layui-col-md12">
+        <table class="layui-hide" id="table_lay" lay-filter="userTable"></table>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index','table','curl'],function () {
+        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+
+        let render_table =table.render({
+            elem: '#table_lay'
+            ,url:'/api.accountGroup/getAccountGroupData'
+            ,parseData: function(res){
+                return {
+                    "code": 0,
+                    "msg": res.msg,
+                    "count": res.data.total,
+                    "data": res.data.data
+                };
+            }
+            ,cellMinWidth: 80
+            ,limit:100
+            ,cols: [[
+                {field:'name',  title: '名称',edit:true}
+                ,{ width:80, title: '操作',toolbar: '#barDemo'}
+            ]]
+        });
+
+        table.on('edit(userTable)', function(obj){
+            curl.ajax('/api.accountGroup/update','post',{name:obj.value,id:obj.data.id},function (res) {
+                layer.msg(res.msg);
+                if(!res.status){
+                    setTimeout(function () {
+                        render_table.reload();
+                    },1000)
+                }
+            });
+        });
+
+        $('.sou').on('click',function (that) {
+            let name = $('#key').val();
+            curl.ajax('/api.accountGroup/store','post',{name:name},function (res) {
+                layer.msg(res.msg);
+                if(res.status){
+                    setTimeout(function () {
+                        render_table.reload();
+                    },1000)
+                }
+            });
+        });
+
+
+        table.on('tool(userTable)', function(obj){
+            let data = obj.data;
+            if (obj.event === 'del'){
+                layer.confirm('真的删除['+data.name+']?', function(index){
+                    curl.ajax('/api.accountGroup/del','post',{id:data.id},function (res) {
+                        layer.msg(res.msg);
+                    });
+                    obj.del();
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+</script>
+{/block}

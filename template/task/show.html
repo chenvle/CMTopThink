@@ -1,0 +1,186 @@
+{extend name="base" /}
+{block name="body"}
+    <form class="layui-form" action="" lay-filter="user_form">
+
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">线路</label>
+            <div class="layui-input-inline" style="margin-right: 10px;">
+                <input disabled type="text" name="line" lay-verify="required" autocomplete="off" placeholder="线路" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">店铺</label>
+            <div class="layui-input-inline" style="margin-right: 10px;">
+                <input disabled type="text" name="store" lay-verify="required" autocomplete="off" placeholder="店铺" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品截图</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <img src="{$task->img}" id="img_display" style="max-height: 300px;cursor: pointer">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">商品价格</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="unit_price" lay-verify="required" autocomplete="off" placeholder="商品价格" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">单订单数量</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="amount" id="amount" lay-verify="required|number" autocomplete="off" placeholder="单订单购买数量" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">运费</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="freight" id="freight" lay-verify="required" autocomplete="off" placeholder="运费" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">快递类型</label>
+            <div class="layui-input-block">
+                <input disabled type="radio" name="type" value="1" title="平台代码" checked="">
+                <input disabled type="radio" name="type" value="2" title="自发空包">
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">佣金价格</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="commission" id="commission" lay-verify="required" autocomplete="off" placeholder="佣金价格" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">当前汇率</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="exchange_rate" id="exchange_rate" lay-verify="required" autocomplete="off" placeholder="当前汇率" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">冻结金额</label>
+            <div class="layui-input-inline" style="margin-right: 10px;">
+                <input disabled type="text" name="frozen_amount" id="frozen_amount" lay-verify="required" autocomplete="off" placeholder="冻结金额" class="layui-input" disabled>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务期数</label>
+            <div class="layui-input-inline" style="margin-right: 10px;">
+                <select name="periods">
+                    <option value="">任务期数</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+        </div>
+
+        {volist name="task_data" id = "vo"}
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">发布时间</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="task_date" id="task_date" value="{$vo.task_date}" lay-verify="required" autocomplete="off" placeholder="发布时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">发布任务数</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="task_number" lay-verify="required" value="{$vo.task_number}" autocomplete="off" placeholder="发布任务数" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-clear"></div>
+        {/volist}
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">关键词搜索</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="keyword" autocomplete="off" placeholder="关键词搜索" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">搜索提醒</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="search_key" autocomplete="off" placeholder="搜索提醒" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单留言</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="remark" autocomplete="off" placeholder="订单留言" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item layui-input-inline">
+            <label class="layui-form-label">动态评分</label>
+            <div class="layui-input-block">
+                <input disabled type="radio" name="DSR" value="1" title="5分好评加评论" checked="">
+                <input disabled type="radio" name="DSR" value="2" title="只要5分好评，不要评价">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">好评评语</label>
+            <div class="layui-input-block" style="margin-right: 10px;">
+                <input disabled type="text" name="good_comment" lay-verify="required" autocomplete="off" placeholder="好评评语" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">增值业务</label>
+            <div class="layui-input-block">
+                <input disabled type="checkbox" name="sellers_how" lay-skin="primary" title="卖家秀【0.5元】" lay-filter="sellers_how">
+                <input disabled type="checkbox" name="collection_shops" lay-skin="primary" title="收藏店铺【0.5元】" lay-filter="collection_shops">
+                <input disabled type="checkbox" name="collection_products" lay-skin="primary" title="收藏产品【0.6元】" lay-filter="collection_products">
+            </div>
+        </div>
+
+    </form>
+{/block}
+{block name="script"}
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index','form','curl','laydate','upload'],function () {
+        let $ = layui.jquery,
+            curl = layui.curl,
+            upload = layui.upload,
+            laydate = layui.laydate,
+            form = layui.form;
+
+
+
+        form.val('user_form',{
+            'line':'{$task->line->name}',
+            'store':'{$task->store->name}',
+            'unit_price':'{$task->unit_price}',
+            'freight':'{$task->freight}',
+            'type':'{$task->type}',
+            'commission':'{$task->commission}',
+            'exchange_rate':'{$task->exchange_rate}',
+            'frozen_amount':'{$task->frozen_amount}',
+            'amount':'{$task->amount}',
+            'periods':'{$task->periods}',
+
+            'keyword':'{$task->keyword}',
+            'search_key':'{$task->search_key}',
+            'remark':'{$task->remark}',
+            'DSR':'{$task->DSR}',
+            'good_comment':'{$task->good_comment}',
+            'sellers_how':'{$task->sellers_how}',
+            'collection_shops':'{$task->collection_shops}',
+            'collection_products':'{$task->collection_products}'
+        });
+
+
+
+
+    });
+</script>
+{/block}

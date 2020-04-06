@@ -1,0 +1,89 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-row">
+    <div class="layui-col-md12 btn_tools">
+        <div class="layui-input-inline" style="width: 300px;">
+            <input type="text" name="k" id="key" value="" placeholder="名称" class="layui-input key">
+        </div>
+        <button type="button" class="layui-btn sou">搜索</button>
+    </div>
+    <div class="line_20"></div>
+    <div class="layui-col-md12">
+        <table class="layui-hide" id="table_lay" lay-filter="userTable"></table>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index','table','curl'],function () {
+        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+
+        let render_table =table.render({
+            elem: '#table_lay'
+            ,url:'/api.order/getOrderData'
+            ,parseData: function(res){
+                return {
+                    "code": 0,
+                    "msg": res.msg,
+                    "count": res.data.total,
+                    "data": res.data.data
+                };
+            }
+            ,where:{
+                // type:'order'
+            }
+            ,page:true
+            ,limit:20
+            ,cellMinWidth: 80
+            ,cols: [[
+                {field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'name', title: '真实姓名',width:120}
+                ,{field:'type', title: '类型',width:80,templet: function(d){
+                        if(d.type==1){
+                            return '充值';
+                        }else{
+                            return '提现';
+                        }
+                    }}
+                ,{field:'price', title: '金额',width:120}
+                ,{field:'card_type', title: '账户类型',width:100,templet: function(d){
+                        if(d.card_type==1){
+                            return '支付宝';
+                        }else{
+                            return '银行账号';
+                        }
+                    }}
+                ,{field:'number', title: '账号',width:180}
+                ,{field:'remark', title: '备注'}
+                ,{field:'creator', title: '申请人',width:120}
+                ,{field:'status', title: '状态',width:100,templet: function(d){
+                        if(d.status==1){
+                            return '<span style="color: green">成功</span>';
+                        }else if(d.status == 2){
+                            return '<span style="color: red">无效</span>';
+                        }else{
+                            return '<span style="color: orange">审核中</span>';
+                        }
+                    }}
+                ,{field:'admin_remark', title: '异常原因',width:120}
+            ]]
+        });
+
+
+        $('.sou').on('click',function (that) {
+            render_table.reload({
+                where:{
+                    key:$('#key').val()
+                }
+            });
+        });
+
+
+    });
+</script>
+{/block}

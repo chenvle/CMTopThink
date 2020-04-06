@@ -1,0 +1,147 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-row">
+    <div class="layui-col-md12 btn_tools">
+        <button class="layui-btn" data-type="AddAdmin" style="margin-right: 30px;">提现</button>
+        <div class="layui-input-inline" style="width: 300px;">
+            <input type="text" name="k" id="key" value="" placeholder="名称" class="layui-input key">
+        </div>
+        <button type="button" class="layui-btn sou">搜索</button>
+    </div>
+    <div class="line_20"></div>
+    <div class="layui-col-md12">
+        <table class="layui-hide" id="table_lay" lay-filter="userTable"></table>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/html" id="barDemo">
+    <?php
+        if(is_admin()){
+    ?>
+    {{# if(d.status != 1){  }}
+    <a class="layui-btn layui-btn-xs" lay-event="edit">确认</a>
+    {{# } }}
+
+    {{# if(d.status === 0){  }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">无效</a>
+    {{# } }}
+
+    <?php
+        }
+    ?>
+</script>
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index','table','curl'],function () {
+        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+
+        let render_table =table.render({
+            elem: '#table_lay'
+            ,url:'/api.order/getOrderData'
+            ,parseData: function(res){
+                return {
+                    "code": 0,
+                    "msg": res.msg,
+                    "count": res.data.total,
+                    "data": res.data.data
+                };
+            }
+            ,page:true
+            ,limit:20
+            ,where:{
+                type:2
+            }
+            ,cellMinWidth: 80
+            ,cols: [[
+                {field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'name', title: '真实姓名',width:120}
+                ,{field:'price', title: '金额',width:120}
+                ,{field:'card_type', title: '账户类型',width:100,templet: function(d){
+                        if(d.card_type==1){
+                            return '支付宝';
+                        }else{
+                            return '银行账号';
+                        }
+                    }}
+                ,{field:'number', title: '账号',width:180}
+                ,{field:'remark', title: '备注'}
+                ,{field:'creator', title: '申请人',width:120}
+                ,{field:'status', title: '状态',width:100,templet: function(d){
+                        if(d.status==1){
+                            return '<span style="color: green">成功</span>';
+                        }else if(d.status == 2){
+                            return '<span style="color: red">无效</span>';
+                        }else{
+                            return '<span style="color: orange">审核中</span>';
+                        }
+                    }}
+                ,{field:'admin_remark', title: '异常原因',width:120}
+                ,{ width:137, title: '操作',toolbar: '#barDemo'}
+            ]]
+        });
+
+
+        $('.sou').on('click',function (that) {
+            render_table.reload({
+                where:{
+                    key:$('#key').val()
+                }
+            });
+        });
+
+
+        table.on('tool(userTable)', function(obj){
+            let data = obj.data;
+            if(obj.event === 'edit'){
+                let index = layer.open({
+                    title:'确认提现:'+data.name,
+                    type:2,
+                    content: ['/order/edit?id='+data.id, 'no'],
+                    area:['500px','400px'],
+                    success: function(layero, index) {
+                    },
+                });
+            }else if (obj.event === 'del'){
+
+
+                layer.prompt({
+                    title:'请输入原因'
+                },function(value, index, elem){
+                    curl.ajax('/api.order/update','post',{id:data.id,del:true,remark:value},function (res) {
+                        layer.msg(res.msg);
+                    });
+                    layer.close(index);
+                    setTimeout(function () {
+                        render_table.reload();
+                    },1000);
+
+                });
+
+            }
+        });
+
+        let active = {
+            AddAdmin: function(){
+                let index = layer.open({
+                    title:'提现申请',
+                    type:2,
+                    content: ['/order/create?type=2', 'no'],
+                    area:['500px','400px'],
+                    success: function(layero, index) {
+                    },
+                });
+            }
+        };
+
+        $('.btn_tools .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+{/block}

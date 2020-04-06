@@ -1,0 +1,164 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-row">
+    <div class="layui-col-md12 btn_tools_sum">
+        排单:<span id="sum_1"></span>
+        佣金 :<span id="sum_2"></span>
+        增值业务:<span id="sum_3"></span>
+        排单退还:<span id="sum_4"></span>
+        佣金退还:<span id="sum_5"></span>
+        增值业务返还:<span id="sum_6"></span>
+        排单取消返还:<span id="sum_7"></span>
+        排单取消返回佣金:<span id="sum_8"></span>
+        排单取消返还增值业务:<span id="sum_9"></span>
+        充值:<span id="sum_10"></span>
+        提现:<span id="sum_11"></span>
+        提现返还:<span id="sum_12"></span>
+    </div>
+    <div class="line_20"></div>
+    <div class="layui-col-md12">
+        <table class="layui-hide" id="table_lay" lay-filter="userTable"></table>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index','table','curl'],function () {
+        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+
+        curl.ajax('/money/sumMoneyAllStatus','post',{},function (res) {
+                if(res.status){
+                    $('#sum_1').text(res.data.sum_1+'元');
+                    $('#sum_2').text(res.data.sum_2+'元');
+                    $('#sum_3').text(res.data.sum_3+'元');
+                    $('#sum_4').text(res.data.sum_4+'元');
+                    $('#sum_5').text(res.data.sum_5+'元');
+                    $('#sum_6').text(res.data.sum_6+'元');
+                    $('#sum_7').text(res.data.sum_7+'元');
+                    $('#sum_8').text(res.data.sum_8+'元');
+                    $('#sum_9').text(res.data.sum_9+'元');
+                    $('#sum_10').text(res.data.sum_10+'元');
+                    $('#sum_11').text(res.data.sum_11+'元');
+                    $('#sum_12').text(res.data.sum_12+'元');
+                }else{
+                    console.log(res);
+                    layer.msg(res.msg);
+                }
+            },
+            function (err) {
+                if(err.responseJSON.code===10501){
+                    layer.msg('异常');
+                }
+            });
+
+        let render_table =table.render({
+            elem: '#table_lay'
+            ,url:'/api.money/getMoneyData'
+            ,parseData: function(res){
+                return {
+                    "code": 0,
+                    "msg": res.msg,
+                    "count": res.data.total,
+                    "data": res.data.data
+                };
+            }
+            ,page:true
+            ,limit:20
+            ,cellMinWidth: 80
+            ,cols: [[
+                {field:'id', width:60, title: 'ID',align:'center'}
+                ,{field:'title', title: '费用名称',minWidth:220}
+                ,{field:'model_type', title: '类型',width:80,templet: function(d){
+                        if(d.model_type==1){
+                            return `<span style="color: green">增加</span>`;
+                        }else{
+                            return `<span style="color: red">减少</span>`;
+                        }
+                    }}
+                ,{field:'frozen_amount', title: '任务金额',width:100,templet: function(d){
+                    if(d.model_name ==='task'){
+                        return d.frozen_amount;
+                    }
+                        return '--';
+                    }}
+                ,{field:'commission', title: '佣金',width:100,templet: function(d){
+                    if(d.model_name ==='task'){
+                        return d.commission;
+                    }
+                        return '--';
+                    }}
+                ,{field:'other_cost', title: '增值业务',width:100,templet: function(d){
+                    if(d.model_name ==='task'){
+                        return d.other_cost;
+                    }
+                        return '--';
+                    }}
+                ,{field:'return_amount', title: '排单返还',width:100,templet: function(d){
+                    if(d.model_name ==='task'){
+                        return d.return_amount;
+                    }
+                        return '--';
+                    }}
+                ,{field:'return_other_cost', title: '增值业务返还',width:140,templet: function(d){
+                    if(d.model_name ==='task'){
+                        return d.return_other_cost;
+                    }
+                        return '--';
+                    }}
+                ,{field:'admin_return_amount', title: '排单取消返还',width:120,templet: function(d){
+                    if(d.model_name ==='task'){
+                        return d.admin_return_amount;
+                    }
+                        return '--';
+                    }}
+                ,{field:'admin_return_commission', title: '排单取消佣金',width:120,templet: function(d){
+                    if(d.model_name ==='task'){
+                        return d.admin_return_commission;
+                    }
+                        return '--';
+                    }}
+                ,{field:'admin_return_other_cost', title: '排单取消增值业务',width:150,templet: function(d){
+                    if(d.model_name ==='task'){
+                        return d.admin_return_other_cost;
+                    }
+                        return '--';
+                    }}
+                ,{field:'recharge', title: '充值',width:100,templet: function(d){
+                    if(d.model_name ==='order'){
+                        return d.recharge;
+                    }
+                        return '--';
+                    }}
+                ,{field:'withdraw', title: '提现',width:100,templet: function(d){
+                    if(d.model_name ==='order'){
+                        return d.withdraw;
+                    }
+                        return '--';
+                    }}
+                ,{field:'return_withdraw', title: '提现返还',width:100,templet: function(d){
+                    if(d.model_name ==='order'){
+                        return d.return_withdraw;
+                    }
+                        return '--';
+                    }}
+            ]]
+        });
+
+
+        $('.sou').on('click',function (that) {
+            render_table.reload({
+                where:{
+                    key:$('#key').val()
+                }
+            });
+        });
+
+
+    });
+</script>
+{/block}

@@ -1,0 +1,15 @@
+{extend name="base" /}
+{block name="body"}
+{/block}
+{block name="script"}
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index'],function () {
+        let $ = layui.jquery;
+        layer.msg('没有权限');
+    });
+</script>
+{/block}

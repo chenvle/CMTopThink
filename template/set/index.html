@@ -1,0 +1,114 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-row">
+
+    <form class="layui-form" action="" lay-filter="user_form">
+        {volist name="sets" id="set"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">{$set.display_name}</label>
+            <div class="layui-input-block" style="margin-right: 50px;">
+                <input type="text" name="{$set.name}" id="{$set.name}" lay-verify="required" autocomplete="off" placeholder="{$set.display_name}" class="layui-input" value="{$set.value}">
+            </div>
+        </div>
+        {if $set.name == 'qr_img'}
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block" style="margin-right: 50px;">
+                <button type="button" class="layui-btn" id="upload">上传图片</button>
+            </div>
+        </div>
+        {/if}
+        {if $set.name == 'qr_img_two'}
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block" style="margin-right: 50px;">
+                <button type="button" class="layui-btn" id="upload_two">上传图片</button>
+            </div>
+        </div>
+        {/if}
+        {/volist}
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="add">更新</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="script"}
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index','form','curl','upload'],function () {
+        let $ = layui.jquery,
+            curl = layui.curl,
+            upload = layui.upload,
+            form = layui.form;
+
+        form.on('submit(add)', function(data){
+            curl.ajax('/api.set/update','post',data.field,function (res) {
+                layer.msg(res.msg);
+                if(res.status){
+                    setTimeout(function () {
+                        window.location.reload();
+                    },1000)
+                }
+            });
+            return false;
+        });
+
+        let uploadInst = upload.render({
+            elem: '#upload'
+            ,url: '/api.upload/img' //改成您自己的上传接口
+            ,before: function(obj){
+
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                layer.msg('上传成功');
+                $('#qr_img').val(res.data.src);
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+        let uploadInstTwo = upload.render({
+            elem: '#upload_two'
+            ,url: '/api.upload/img' //改成您自己的上传接口
+            ,before: function(obj){
+
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                layer.msg('上传成功');
+                $('#qr_img_two').val(res.data.src);
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInstTwo.upload();
+                });
+            }
+        });
+    });
+</script>
+{/block}

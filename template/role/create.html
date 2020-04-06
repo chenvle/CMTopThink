@@ -1,0 +1,50 @@
+{extend name="base" /}
+{block name="body"}
+    <form class="layui-form" action="" lay-filter="user_form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" value="admin" title="管理员">
+                <input type="radio" name="type" value="user" title="会员">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block" style="margin-right: 50px;">
+                <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+            </div>
+        </div>
+    </form>
+{/block}
+{block name="script"}
+<script>
+    layui.config({
+        base: '/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index','form','curl'],function () {
+        let $ = layui.jquery,
+            curl = layui.curl,
+            form = layui.form;
+
+        let iframe = parent.layer.getFrameIndex(window.name);
+        form.on('submit(add)', function(data){
+            curl.ajax('/api.role/store','post',data.field,function (res) {
+                layer.msg(res.msg);
+                if(res.status){
+                    setTimeout(function () {
+                        parent.layer.close(iframe);
+                        parent.location.reload();
+                    },1000)
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

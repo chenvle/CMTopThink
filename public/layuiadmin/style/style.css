@@ -1,0 +1,165 @@
+body .vle{
+    height: auto!important;
+}
+.layui-layer-title{
+    border-bottom: none!important;
+}
+.layui-layer-iframe{
+    border-radius: 8px!important;
+    overflow: hidden;
+}
+.lay_center{
+    text-align: center;
+}
+.label_two{
+    width: 30px;
+}
+.label_two_div{
+    margin-left: 60px;
+}
+.avatar{
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.v_form_item label{
+    width: 56px;
+}
+.v_form_item .layui-input-inline{
+    margin: 0 0 10px 89px;
+    text-align: left;
+}
+.v_form_upload_item button{
+    float: left;
+}
+.review{
+    display: inline-block;
+    height: 38px;
+    float: left;
+}
+.review img{
+    margin-left: 15px;
+    height: 38px;
+    margin-right: 15px;
+}
+.padding-10{
+    padding: 10px;
+}
+.none{
+    display: none;
+}
+.about_save_btn{
+    margin: 0 auto;
+    display: block;
+}
+.tool_btn{
+    margin-bottom: 10px;
+}
+.url_left{
+    width: 90px!important;
+    margin-right: 0!important;
+}
+.url_left input{
+    border-right: none
+}
+.url_center{
+    width: 120px!important;
+    margin-right: 0!important;
+}
+.url_center input{
+    border-right: none;
+    border-left: none;
+    padding-left: 0;
+    text-align: center;
+}
+.url_right{
+    width: 60px!important;
+}
+.url_right input{
+    border-left: none;
+    padding-left: 0
+}
+.content_h3{
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+}
+.tree_show_this .layui-tree-txt{
+    color: #009688;
+    font-weight: bold;
+}
+.layui-tree-line .layui-tree-entry:hover .layui-tree-txt{
+    text-decoration: none;
+}
+
+
+div[lay-id=list_img_table] .layui-table-cell{
+    height:auto;
+    line-height: 100%;
+}
+div[lay-id=list_img_table] .layui-table-cell img{
+    margin-right: 10px;
+}
+
+
+/*后台模版*/
+.temple{
+    padding: 20px;
+}
+.temple_title{
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+}
+.temple_info{
+    line-height: 30px;
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    margin: 10px 0;
+}
+
+
+
+.layui-content{
+    padding: 15px;
+}
+
+
+.line_20{
+    height: 20px;
+    display: block;
+    width: 100%;
+}
+.label_two_div{
+    height: 370px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.account_p{
+    line-height: 38px;
+    font-weight: bold;
+    color: #f00;
+}
+
+
+
+.btn_tools_sum{
+    border: 1px solid red;
+    padding: 5px 10px;
+}
+.btn_tools_sum span{
+    color: red;
+    font-weight: bold;
+    margin-right: 20px;
+    margin-left: 10px;
+}
+.home_page{
+    height: 100%;
+    background: url("../../home.jpg") 100% 100%;
+    opacity: 0.1;
+}
+
+.layui-form-select dl{max-height: 220px;}
