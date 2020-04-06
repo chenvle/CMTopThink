@@ -23,6 +23,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/framework" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-helper" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-migration" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-multi-app" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-orm" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-template" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-trace" />

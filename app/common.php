@@ -329,7 +329,7 @@ if (!function_exists('Auth')) {
         $token = session('token');
         $id    = getToken($token);
         try {
-            $user = (new app\model\User)->find($id);
+            $user = (new app\common\model\User)->find($id);
         } catch (DataNotFoundException $e) {
             return msg_error();
         } catch (ModelNotFoundException $e) {
@@ -524,7 +524,7 @@ if (!function_exists('sumMoney')) {
          * */
         if (is_numeric($userOrId)) {
             try {
-                $user = (new app\model\User)->find($userOrId);
+                $user = (new app\common\model\User)->find($userOrId);
             } catch (DataNotFoundException $e) {
                 return msg_error('异常', $e);
             } catch (ModelNotFoundException $e) {

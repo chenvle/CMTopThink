@@ -75,7 +75,7 @@ class Auth
             if(!is_numeric($user_id)){
                 return msg_error('异常',false);
             }
-            $this->user = \app\model\User::find($user_id);
+            $this->user = \app\common\model\User::find($user_id);
             if($this->user->frozen == 1){
                 return msg_error('账户异常',false);
             }
