@@ -11,6 +11,10 @@ CMTopThink V6.0
 * 资金余额管理
 * 刷单平台
 
+## 技术
+* ThinkPHP v6.0
+* LayUI v2.5.5
+
 ## 安装
 
 ~~~
