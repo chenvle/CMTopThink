@@ -50,6 +50,7 @@ php think seed:run
 
 ##### 账号
 ~~~
+http://loaclhost/admin
 管理员
 账号：cmtime
 密码：cmtime
