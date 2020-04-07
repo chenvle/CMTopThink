@@ -47,3 +47,14 @@ default_lang = zh-cn
 php think migrate:run
 php think seed:run
 ~~~
+
+##### 账号
+~~~
+管理员
+账号：cmtime
+密码：cmtime
+
+会员
+账号：chenvle
+密码：chenvle
+~~~
