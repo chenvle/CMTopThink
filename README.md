@@ -17,6 +17,34 @@ CMTopThink V6.0
 git clone https://github.com/chenvle/CMTopThink.git
 cd CMTopThink
 composer update
+cp .example.env .env
+~~~
+##### 配置数据库
+.env 配置文件
+~~~
+APP_DEBUG = true
+key = ksfjalksnfksldfksldjfklsdjflkasdf
+
+[APP]
+DEFAULT_TIMEZONE = Asia/Shanghai
+
+
+[DATABASE]
+TYPE = mysql
+HOSTNAME = 127.0.0.1
+DATABASE = test
+USERNAME = username
+PASSWORD = password
+HOSTPORT = 3306
+CHARSET = utf8
+DEBUG = true
+
+[LANG]
+default_lang = zh-cn
 ~~~
 
-
+迁移/填充数据
+~~~
+php think migrate:run
+php think seed:run
+~~~
