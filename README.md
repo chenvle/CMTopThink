@@ -19,8 +19,7 @@ cd CMTopThink
 composer update
 cp .example.env .env
 ~~~
-##### 配置数据库
-.env 配置文件
+##### 配置数据库（.env 配置文件）
 ~~~
 APP_DEBUG = true
 key = ksfjalksnfksldfksldjfklsdjflkasdf
@@ -43,7 +42,7 @@ DEBUG = true
 default_lang = zh-cn
 ~~~
 
-迁移/填充数据
+##### 迁移/填充数据
 ~~~
 php think migrate:run
 php think seed:run
