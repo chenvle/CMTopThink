@@ -1,5 +1,5 @@
 {
-    "name": "topthink/think",
+    "name": "chenweile/cm-top-think",
     "description": "the new thinkphp framework",
     "type": "project",
     "keywords": [
@@ -11,8 +11,8 @@
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "liu21st",
-            "email": "liu21st@gmail.com"
+            "name": "chenvle",
+            "email": "chenvle@cmtime.cn"
         }
     ],
     "require": {
