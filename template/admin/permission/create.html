@@ -40,7 +40,7 @@
 
         let iframe = parent.layer.getFrameIndex(window.name);
         form.on('submit(add)', function(data){
-            curl.ajax('/api.permission/store','post',data.field,function (res) {
+            curl.ajax('/admin/api.permission/store','post',data.field,function (res) {
                 if(res.code === 10501){
                     layer.msg('异常');
                 }

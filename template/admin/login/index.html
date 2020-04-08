@@ -68,7 +68,7 @@
         //提交
         form.on('submit(LAY-user-login-submit)', function(obj){
             obj.field.type='admin';
-            curl.ajax('/api.login/auto', 'post',obj.field, function (res) {
+            curl.ajax('/admin/api.login/auto', 'post',obj.field, function (res) {
                 layer.msg(res.msg);
                 if(res.status){
                     setTimeout(function () {

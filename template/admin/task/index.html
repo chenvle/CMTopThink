@@ -31,7 +31,7 @@
 
         let render_table = table.render({
             elem: '#table_lay'
-            , url: '/api.task/getTaskData'
+            , url: '/admin/api.task/getTaskData'
             , parseData: function (res) {
                 return {
                     "code": 0,
@@ -104,7 +104,7 @@
                     },
                     btn2: function (index, layero) {
                         if (data.status === '已申请') {
-                            curl.ajax('/api.task/cancel', 'post', {id: data.id}, function (res) {
+                            curl.ajax('/admin/api.task/cancel', 'post', {id: data.id}, function (res) {
                                 layer.msg(res.msg);
                                 if (res.status) {
                                     layer.close(index);

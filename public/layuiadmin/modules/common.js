@@ -19,7 +19,7 @@ layui.define('curl',function(exports){
   //退出
   admin.events.logout = function(){
     let type = $(this).data('type');
-    curl.ajax('/api.login/logout','post',{},function (res) {
+    curl.ajax('/admin/api.login/logout','post',{},function (res) {
       layer.msg(res.msg);
       if(res.status){
         setTimeout(function () {

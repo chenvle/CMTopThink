@@ -30,7 +30,7 @@
             tree = layui.tree,
             form = layui.form;
 
-        curl.ajax('/api.permission/list','get',{id:'{$info.id}'},function (res) {
+        curl.ajax('/admin/api.permission/list','get',{id:'{$info.id}'},function (res) {
             if(res.status){
                 tree.render({
                     elem: '#tree'
@@ -50,7 +50,7 @@
             const field = data.field;
             field.permissions = tree.getChecked('treeClick');
             field.id='{$info.id}';
-            curl.ajax('/api.role/power','post',field,function (res) {
+            curl.ajax('/admin/api.role/power','post',field,function (res) {
                 layer.msg(res.msg);
                 if(res.status){
                     setTimeout(function () {

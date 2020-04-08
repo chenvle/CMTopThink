@@ -219,7 +219,7 @@
             });
         }
         $('#update').on('click',function () {
-            curl.ajax('/api.money/now','post',{},function (res) {
+            curl.ajax('/admin/api.money/now','post',{},function (res) {
                     // layer.msg(res.msg);
                     $('#money_id .now_money').text(res.data.money);
                 },

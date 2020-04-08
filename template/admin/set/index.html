@@ -50,7 +50,7 @@
             form = layui.form;
 
         form.on('submit(add)', function(data){
-            curl.ajax('/api.set/update','post',data.field,function (res) {
+            curl.ajax('/admin/api.set/update','post',data.field,function (res) {
                 layer.msg(res.msg);
                 if(res.status){
                     setTimeout(function () {
@@ -63,7 +63,7 @@
 
         let uploadInst = upload.render({
             elem: '#upload'
-            ,url: '/api.upload/img' //改成您自己的上传接口
+            ,url: '/admin/api.upload/img' //改成您自己的上传接口
             ,before: function(obj){
 
             }
@@ -87,7 +87,7 @@
         });
         let uploadInstTwo = upload.render({
             elem: '#upload_two'
-            ,url: '/api.upload/img' //改成您自己的上传接口
+            ,url: '/admin/api.upload/img' //改成您自己的上传接口
             ,before: function(obj){
 
             }

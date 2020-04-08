@@ -55,7 +55,7 @@
 
         form.on('submit(add)', function(data){
             data.field.id='{$info.id}';
-            curl.ajax('/api.service/update','post',data.field,function (res) {
+            curl.ajax('/admin/api.service/update','post',data.field,function (res) {
                 layer.msg(res.msg);
                 if(res.status){
                     setTimeout(function () {

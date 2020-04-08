@@ -42,7 +42,7 @@
 
         let render_table =table.render({
             elem: '#table_lay'
-            ,url:'/api.order/getOrderData'
+            ,url:'/admin/api.order/getOrderData'
             ,parseData: function(res){
                 return {
                     "code": 0,
@@ -112,7 +112,7 @@
                 layer.prompt({
                     title:'请输入原因'
                 },function(value, index, elem){
-                    curl.ajax('/api.order/update','post',{id:data.id,del:true,remark:value},function (res) {
+                    curl.ajax('/admin/api.order/update','post',{id:data.id,del:true,remark:value},function (res) {
                         layer.msg(res.msg);
                     });
                     layer.close(index);

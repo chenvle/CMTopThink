@@ -75,7 +75,7 @@
                 });
             }else if (obj.event === 'del'){
                 layer.confirm('真的删除['+data.name+']?', function(index){
-                    curl.ajax('/api.user/del','post',{id:data.id},function (res) {
+                    curl.ajax('/admin/api.user/del','post',{id:data.id},function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();

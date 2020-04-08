@@ -34,7 +34,7 @@
 
         let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/api.role/getRoleData'
+            ,url:'/admin/api.role/getRoleData'
             ,where:{type:'user'}
             ,parseData: function(res){
                 return {
@@ -83,7 +83,7 @@
                 });
             }else if (obj.event === 'del'){
                 layer.confirm('真的删除['+data.name+']?', function(index){
-                    curl.ajax('/api.role/del','post',{id:data.id},function (res) {
+                    curl.ajax('/admin/api.role/del','post',{id:data.id},function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();

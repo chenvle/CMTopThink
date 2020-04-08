@@ -40,7 +40,7 @@
 
         form.on('submit(add)', function(data){
             data.field.id='{$info.id}';
-            curl.ajax('/api.commission/update','post',data.field,function (res) {
+            curl.ajax('/admin/api.commission/update','post',data.field,function (res) {
                 layer.msg(res.msg);
                 if(res.status){
                     setTimeout(function () {

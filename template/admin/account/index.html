@@ -35,7 +35,7 @@
 
         let render_table =table.render({
             elem: '#table_lay'
-            ,url:'/api.account/getAccountData'
+            ,url:'/admin/api.account/getAccountData'
             ,parseData: function(res){
                 return {
                     "code": 0,
@@ -85,7 +85,7 @@
                 });
             }else if (obj.event === 'del'){
                 layer.confirm('真的删除['+data.name+']?', function(index){
-                    curl.ajax('/api.account/del','post',{id:data.id},function (res) {
+                    curl.ajax('/admin/api.account/del','post',{id:data.id},function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();

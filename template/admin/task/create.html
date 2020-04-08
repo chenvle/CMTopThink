@@ -219,7 +219,7 @@
                 value:'{if !$is_create}{$task.title}{/if}',
             },function(value, index, elem){
                 field.title = value;
-                curl.ajax('/api.task/store','post',field,function (res) {
+                curl.ajax('/admin/api.task/store','post',field,function (res) {
                     layer.msg(res.msg);
                 },
                     function (err) {
@@ -235,7 +235,7 @@
         /*{if $is_create}*/
 
         form.on('submit(add)', function(data){
-            curl.ajax('/api.task/store','post',data.field,function (res) {
+            curl.ajax('/admin/api.task/store','post',data.field,function (res) {
                     layer.msg(res.msg);
                     if(res.status){
                         window.parent.document.getElementById("update").click();
@@ -254,7 +254,7 @@
 
         form.on('select(template)', function(data){
             if(data.value){
-                curl.ajax('/api.template/find','post',{id:data.value},function (res) {
+                curl.ajax('/admin/api.template/find','post',{id:data.value},function (res) {
                         if(res.status){
                             form.val('user_form',{
                                 'line_id':res.data.line_id,
@@ -327,7 +327,7 @@
 
         let uploadInst = upload.render({
             elem: '#upload'
-            ,url: '/api.upload/img'
+            ,url: '/admin/api.upload/img'
             ,before: function(obj){
 
             }

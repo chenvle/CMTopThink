@@ -46,9 +46,9 @@ class Auth
         if(!$msg['status']){
             session('Message',$msg['msg']);
             if($msg['data'] && $msg['data']=='admin' ){
-                return redirect('/login/index?type=admin');
+                return redirect('/admin/login/index?type=admin');
             }else{
-                return redirect('/login/index');
+                return redirect('/admin/login/index');
             }
         }else{
             if(substr($controller,0,3) != 'api'){

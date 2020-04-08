@@ -54,7 +54,7 @@
 
         let iframe = parent.layer.getFrameIndex(window.name);
         form.on('submit(add)', function(data){
-            curl.ajax('/api.user/store','post',data.field,function (res) {
+            curl.ajax('/admin/api.user/store','post',data.field,function (res) {
                 layer.msg(res.msg);
                 if(res.status){
                     setTimeout(function () {
