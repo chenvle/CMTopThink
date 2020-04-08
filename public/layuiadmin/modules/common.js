@@ -24,9 +24,9 @@ layui.define('curl',function(exports){
       if(res.status){
         setTimeout(function () {
           if(type === 'admin'){
-            location.href = '/login?type=admin';
+            location.href = '/admin/login?type=admin';
           }else{
-            location.href = '/login';
+            location.href = '/admin/login';
           }
         },1000)
       }

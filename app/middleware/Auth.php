@@ -3,7 +3,6 @@ declare (strict_types = 1);
 
 namespace app\middleware;
 
-use app\admin\model\User;
 use Closure;
 use think\db\exception\DbException;
 use think\Request;
@@ -38,27 +37,34 @@ class Auth
         $controller = $request->controller();
         $action     = $request->action();
         $route = $controller.'/'.$action;
-        if(in_array($route,$this->no_auth_controller)){
+        $App = App('http')->getName();
+
+        if($App == 'admin'){
+            if(in_array($route,$this->no_auth_controller)){
+                return $next($request);
+            }
+
+            $msg = $this->auth();
+            if(!$msg['status']){
+                session('Message',$msg['msg']);
+                if($msg['data'] && $msg['data']=='admin' ){
+                    return redirect('/admin/login/index?type=admin');
+                }else{
+                    return redirect('/admin/login/index');
+                }
+            }else{
+                if(substr($controller,0,3) != 'api'){
+                    if(!permission($route) && !in_array('admin',array_column(Auth()->roles->toArray(),'name'))){
+                        session('Message','没有权限');
+                        return redirect('/power');
+                    }
+                }
+                return $next($request);
+            }
+        }else{
             return $next($request);
         }
 
-        $msg = $this->auth();
-        if(!$msg['status']){
-            session('Message',$msg['msg']);
-            if($msg['data'] && $msg['data']=='admin' ){
-                return redirect('/admin/login/index?type=admin');
-            }else{
-                return redirect('/admin/login/index');
-            }
-        }else{
-            if(substr($controller,0,3) != 'api'){
-                if(!permission($route) && !in_array('admin',array_column(Auth()->roles->toArray(),'name'))){
-                    session('Message','没有权限');
-                    return redirect('/power');
-                }
-            }
-            return $next($request);
-        }
     }
 
     /**
