@@ -23,7 +23,7 @@ class Auth
      * 不通过中间件的路由
      */
     protected $no_auth_controller = [
-
+        'Login/index'
     ];
     /**
      * 处理请求
@@ -53,12 +53,12 @@ class Auth
                     return redirect('/admin/login/index');
                 }
             }else{
-                if(substr($controller,0,3) != 'api'){
+//                if(substr($controller,0,3) != 'api'){
                     if(!permission($route) && !in_array('admin',array_column(Auth()->roles->toArray(),'name'))){
                         session('Message','没有权限');
                         return redirect('/power');
                     }
-                }
+//                }
                 return $next($request);
             }
         }else{

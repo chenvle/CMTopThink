@@ -17,19 +17,19 @@ class SetSeeder extends Seeder
         $admin_data = [
             [
                 'name'=>'account',
-                'value'=>'账号 ‭17280933042‬ 陈婷',
+                'value'=>'11223344556',
                 'display_name'=>'充值账号'
             ],[
                 'name'=>'qr_img',
-                'value'=>'http://34.84.176.3/Public/admin/images/alipay.jpg',
+                'value'=>'',
                 'display_name'=>'充值二维码'
             ],[
                 'name'=>'account_two',
-                'value'=>'账号 ‭17280933042‬ 陈婷',
+                'value'=>'22334455667',
                 'display_name'=>'充值账号'
             ],[
                 'name'=>'qr_img_two',
-                'value'=>'http://34.84.176.3/Public/admin/images/alipay.jpg',
+                'value'=>'',
                 'display_name'=>'充值二维码'
             ],[
                 'name'=>'rate',
