@@ -15,6 +15,6 @@ class Index extends BaseController
 
     public function index(Request $request)
     {
-        echo 'CMTopThink V6.0';
+        echo 'CMTopThink V6.0'.' CopyRight '.now('Y');
     }
 }
