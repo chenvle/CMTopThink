@@ -62,15 +62,15 @@ class UserSeeder extends Seeder
     protected function seeder_data()
     {
         try {
-            $role = \app\model\Role::find(1);
+            $role = \app\common\model\Role::find(1);
             $role->users()->attach([1]);
-            $permissions = \app\model\Permission::where('type','admin')->select()->toArray();
+            $permissions = \app\common\model\Permission::where('type','admin')->select()->toArray();
             $permission_ids = array_column($permissions,'id');
             $role->permissions()->attach($permission_ids);
 
-            $permissions = \app\model\Permission::where('type','user')->select()->toArray();
+            $permissions = \app\common\model\Permission::where('type','user')->select()->toArray();
             $permission_ids = array_column($permissions,'id');
-            $user_role = \app\model\Role::find(2);
+            $user_role = \app\common\model\Role::find(2);
             $user_role->users()->attach([2]);
             $user_role->permissions()->attach($permission_ids);
         } catch (\think\db\exception\DataNotFoundException $e) {
