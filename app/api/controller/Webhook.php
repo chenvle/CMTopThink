@@ -9,11 +9,15 @@ class Webhook extends BaseController
 {
     public function pull()
     {
-        error_reporting ( E_ALL );
-        $dir = '/www/wwwroot/CMTopThink/';//该目录为git检出目录
-        $handle = popen('cd '.$dir.' && git pull 2>&1','r');
-        $read = stream_get_contents($handle);
-        printf($read);
-        pclose($handle);
+
+        //本地路径
+        $local = '/www/wwwroot/CMTopThink';
+        //仓库地址
+        $remote = 'git@github.com:chenvle/CMTopThink.git';
+
+
+        echo 'develop:';
+        echo shell_exec("cd {$local} && git pull {$remote} 2>&1");
+        die('done ' . date('Y-m-d H:i:s', time()));
     }
 }
