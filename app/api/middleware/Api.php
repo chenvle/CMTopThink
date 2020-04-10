@@ -12,7 +12,7 @@ use think\Response;
  * Class Auth
  * @package app\middleware
  */
-class Auth
+class Api
 {
     /**
      * @var
@@ -38,6 +38,7 @@ class Auth
         $action     = $request->action();
         $route = $controller.'/'.$action;
         $App = App('http')->getName();
+        dump($route);
 
         if($App == 'api'){
             if(in_array($route,$this->no_auth_controller)){
