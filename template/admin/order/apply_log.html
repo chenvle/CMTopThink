@@ -37,13 +37,13 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','table','curl'],function () {
-        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+    }).use(['index', 'table', 'curl'], function () {
+        let $ = layui.jquery, table = layui.table, curl = layui.curl;
 
-        let render_table =table.render({
+        let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/admin/api.order/getOrderData'
-            ,parseData: function(res){
+            , url: '{:url("api.order/getOrderData")}'
+            , parseData: function (res) {
                 return {
                     "code": 0,
                     "msg": res.msg,
@@ -51,73 +51,81 @@
                     "data": res.data.data
                 };
             }
-            ,page:true
-            ,limit:20
-            ,where:{
-                type:1
+            , page: true
+            , limit: 20
+            , where: {
+                type: 1
             }
-            ,cellMinWidth: 80
-            ,cols: [[
-                {field:'id', width:80, title: 'ID', sort: true}
-                ,{field:'name', title: '真实姓名',width:120}
-                ,{field:'price', title: '金额',width:120}
-                ,{field:'card_type', title: '账户类型',width:100,templet: function(d){
-                        if(d.card_type==1){
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'id', width: 80, title: 'ID', sort: true}
+                , {field: 'name', title: '真实姓名', width: 120}
+                , {field: 'price', title: '金额', width: 120}
+                , {
+                    field: 'card_type', title: '账户类型', width: 100, templet: function (d) {
+                        if (d.card_type == 1) {
                             return '支付宝';
-                        }else{
+                        } else {
                             return '银行账号';
                         }
-                    }}
-                ,{field:'number', title: '账号/流水',width:180}
-                ,{field:'remark', title: '备注'}
-                ,{field:'creator', title: '申请人',width:120}
-                ,{field:'status', title: '状态',width:100,templet: function(d){
-                        if(d.status==1){
+                    }
+                }
+                , {field: 'number', title: '账号/流水', width: 180}
+                , {field: 'remark', title: '备注'}
+                , {field: 'creator', title: '申请人', width: 120}
+                , {
+                    field: 'status', title: '状态', width: 100, templet: function (d) {
+                        if (d.status == 1) {
                             return '<span style="color: green">成功</span>';
-                        }else if(d.status == 2){
+                        } else if (d.status == 2) {
                             return '<span style="color: red">无效</span>';
-                        }else{
+                        } else {
                             return '<span style="color: orange">审核中</span>';
                         }
-                    }}
-                ,{field:'admin_remark', title: '异常原因',width:120}
-                ,{ width:137, title: '操作',toolbar: '#barDemo'}
+                    }
+                }
+                , {field: 'admin_remark', title: '异常原因', width: 120}
+                , {width: 137, title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
 
-        $('.sou').on('click',function (that) {
+        $('.sou').on('click', function (that) {
             render_table.reload({
-                where:{
-                    key:$('#key').val()
+                where: {
+                    key: $('#key').val()
                 }
             });
         });
 
 
-        table.on('tool(userTable)', function(obj){
+        table.on('tool(userTable)', function (obj) {
             let data = obj.data;
-            if(obj.event === 'edit'){
+            if (obj.event === 'edit') {
                 let index = layer.open({
-                    title:'确认充值:'+data.name,
-                    type:2,
-                    content: ['/order/edit?id='+data.id, 'no'],
-                    area:['500px','400px'],
-                    success: function(layero, index) {
+                    title: '确认充值:' + data.name,
+                    type: 2,
+                    content: ['{:url("order/edit")}?id=' + data.id, 'no'],
+                    area: ['500px', '400px'],
+                    success: function (layero, index) {
                     },
                 });
-            }else if (obj.event === 'del'){
+            } else if (obj.event === 'del') {
 
                 layer.prompt({
-                    title:'请输入原因'
-                },function(value, index, elem){
-                    curl.ajax('/admin/api.order/update','post',{id:data.id,del:true,remark:value},function (res) {
+                    title: '请输入原因'
+                }, function (value, index, elem) {
+                    curl.ajax('{:url("api.order/update")}', 'post', {
+                        id: data.id,
+                        del: true,
+                        remark: value
+                    }, function (res) {
                         layer.msg(res.msg);
                     });
                     layer.close(index);
                     setTimeout(function () {
                         render_table.reload();
-                    },1000);
+                    }, 1000);
 
                 });
 
@@ -125,19 +133,19 @@
         });
 
         let active = {
-            AddAdmin: function(){
+            AddAdmin: function () {
                 let index = layer.open({
-                    title:'添加充值申请',
-                    type:2,
-                    content: ['/order/create?type=1'],
-                    area:['500px','700px'],
-                    success: function(layero, index) {
+                    title: '添加充值申请',
+                    type: 2,
+                    content: ['{:url("order/create")}?type=1'],
+                    area: ['500px', '700px'],
+                    success: function (layero, index) {
                     },
                 });
             }
         };
 
-        $('.btn_tools .layui-btn').on('click', function(){
+        $('.btn_tools .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });

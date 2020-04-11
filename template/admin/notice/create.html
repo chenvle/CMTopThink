@@ -1,35 +1,38 @@
 {extend name="base" /}
 {block name="body"}
-    <form class="layui-form" action="" lay-filter="user_form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">标题</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="标题" class="layui-input">
+<form class="layui-form" action="" lay-filter="user_form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="标题"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示时间</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <div class="layui-col-xs6">
+                <input type="text" name="start_time" id="start_time" lay-verify="required" autocomplete="off"
+                       placeholder="开始时间" class="layui-input">
+            </div>
+            <div class="layui-col-xs6">
+                <input type="text" name="end_time" id="end_time" lay-verify="required" autocomplete="off"
+                       placeholder="结束时间" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">显示时间</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <div class="layui-col-xs6">
-                    <input type="text" name="start_time" id="start_time" lay-verify="required" autocomplete="off" placeholder="开始时间" class="layui-input">
-                </div>
-                <div class="layui-col-xs6">
-                    <input type="text" name="end_time" id="end_time" lay-verify="required" autocomplete="off" placeholder="结束时间" class="layui-input">
-                </div>
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <textarea placeholder="请输入内容" class="layui-textarea" name="content" style="height: 250px;"></textarea>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">内容</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <textarea placeholder="请输入内容" class="layui-textarea" name="content" style="height: 250px;"></textarea>
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-            </div>
-        </div>
-    </form>
+    </div>
+</form>
 {/block}
 {block name="script"}
 <script>
@@ -37,7 +40,7 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','form','curl','laydate'],function () {
+    }).use(['index', 'form', 'curl', 'laydate'], function () {
         let $ = layui.jquery,
             curl = layui.curl,
             laydate = layui.laydate,
@@ -51,18 +54,18 @@
         });
 
         let iframe = parent.layer.getFrameIndex(window.name);
-        form.on('submit(add)', function(data){
-            curl.ajax('/admin/api.notice/store','post',data.field,function (res) {
-                layer.msg(res.msg);
-                if(res.status){
-                    setTimeout(function () {
-                        parent.layer.close(iframe);
-                        parent.location.reload();
-                    },1000)
-                }
-            },
+        form.on('submit(add)', function (data) {
+            curl.ajax('{:url("api.notice/store")}', 'post', data.field, function (res) {
+                    layer.msg(res.msg);
+                    if (res.status) {
+                        setTimeout(function () {
+                            parent.layer.close(iframe);
+                            parent.location.reload();
+                        }, 1000)
+                    }
+                },
                 function (err) {
-                    if(err.responseJSON.code===10501){
+                    if (err.responseJSON.code === 10501) {
                         layer.msg('已存在');
                     }
                 });

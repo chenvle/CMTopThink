@@ -1,50 +1,54 @@
 {extend name="base" /}
 {block name="body"}
-    <form class="layui-form" action="" lay-filter="user_form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">金额</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="price" lay-verify="required" autocomplete="off" placeholder="金额" class="layui-input" disabled>
-            </div>
+<form class="layui-form" action="" lay-filter="user_form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">金额</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="price" lay-verify="required" autocomplete="off" placeholder="金额"
+                   class="layui-input" disabled>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">账户类型</label>
-            <div class="layui-input-block">
-                <input type="radio" name="card_type" value="1" title="支付宝" disabled>
-                <input type="radio" name="card_type" value="2" title="银行账号" disabled>
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">账户类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="card_type" value="1" title="支付宝" disabled>
+            <input type="radio" name="card_type" value="2" title="银行账号" disabled>
         </div>
+    </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">真实姓名</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="真实姓名" class="layui-input" disabled>
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">真实姓名</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="真实姓名"
+                   class="layui-input" disabled>
         </div>
+    </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">{if $info.type == 1}交易流水号{else}账号{/if}</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="交易号流水号" class="layui-input" disabled>
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">{if $info.type == 1}交易流水号{else}账号{/if}</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="交易号流水号"
+                   class="layui-input" disabled>
         </div>
+    </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="remark" lay-verify="required" autocomplete="off" placeholder="备注" class="layui-input" disabled>
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="remark" lay-verify="required" autocomplete="off" placeholder="备注"
+                   class="layui-input" disabled>
         </div>
+    </div>
 
 
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit="" lay-filter="add">确认充值</button>
-            </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="add">确认充值</button>
         </div>
+    </div>
 
 
-    </form>
+</form>
 {/block}
 {block name="script"}
 <script>
@@ -52,24 +56,24 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','form','curl'],function () {
+    }).use(['index', 'form', 'curl'], function () {
         let $ = layui.jquery,
             curl = layui.curl,
             form = layui.form;
 
         let iframe = parent.layer.getFrameIndex(window.name);
-        form.on('submit(add)', function(data){
-            curl.ajax('/admin/api.order/update','post',{id:'{$info.id}'},function (res) {
-                layer.msg(res.msg);
-                if(res.status){
-                    setTimeout(function () {
-                        parent.layer.close(iframe);
-                        parent.location.reload();
-                    },300)
-                }
-            },
+        form.on('submit(add)', function (data) {
+            curl.ajax('{:url("api.order/update")}', 'post', {id: '{$info.id}'}, function (res) {
+                    layer.msg(res.msg);
+                    if (res.status) {
+                        setTimeout(function () {
+                            parent.layer.close(iframe);
+                            parent.location.reload();
+                        }, 300)
+                    }
+                },
                 function (err) {
-                    if(err.responseJSON.code===10501){
+                    if (err.responseJSON.code === 10501) {
                         layer.msg('异常');
                     }
                 });

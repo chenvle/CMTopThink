@@ -18,14 +18,14 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','table','curl'],function () {
-        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+    }).use(['index', 'table', 'curl'], function () {
+        let $ = layui.jquery, table = layui.table, curl = layui.curl;
 
-        let render_table =table.render({
+        let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/admin/api.template/getTemplateData'
-            ,where:{type:'user'}
-            ,parseData: function(res){
+            , url: '{:url("api.template/getTemplateData")}'
+            , where: {type: 'user'}
+            , parseData: function (res) {
                 return {
                     "code": 0,
                     "msg": res.msg,
@@ -33,36 +33,34 @@
                     "data": res.data.data
                 };
             }
-            ,cellMinWidth: 80
-            ,cols: [[
-                {field:'id', width:80, title: 'ID', sort: true}
-                ,{field:'title', title: '名称'}
-                ,{ width:137, title: '操作',toolbar: '#barDemo'}
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'id', width: 80, title: 'ID', sort: true}
+                , {field: 'title', title: '名称'}
+                , {width: 137, title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
 
-        table.on('tool(userTable)', function(obj){
+        table.on('tool(userTable)', function (obj) {
             let data = obj.data;
-            if (obj.event === 'del'){
-                layer.confirm('真的删除['+data.title+']?', function(index){
-                    curl.ajax('/admin/api.template/del','post',{id:data.id},function (res) {
+            if (obj.event === 'del') {
+                layer.confirm('真的删除[' + data.title + ']?', function (index) {
+                    curl.ajax('{:url("api.template/del")}', 'post', {id: data.id}, function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();
                     layer.close(index);
                 });
-            }else if(obj.event === 'edit'){
+            } else if (obj.event === 'edit') {
                 let index = layer.open({
                     title: '编辑模板' + data.title,
                     type: 2,
-                    content: ['/task/edit?id=' + data.id],
+                    content: ['{:url("task/edit")}?id=' + data.id],
                     area: ['70%', '80%'],
-                    cancel: function(index, layero){
-                        // if(confirm('确定要关闭么')){
-                            layer.close(index);
-                            render_table.reload();
-                        // }
+                    cancel: function (index, layero) {
+                        layer.close(index);
+                        render_table.reload();
                         return false;
                     }
                 });

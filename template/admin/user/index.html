@@ -29,14 +29,14 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','table','curl'],function () {
-        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+    }).use(['index', 'table', 'curl'], function () {
+        let $ = layui.jquery, table = layui.table, curl = layui.curl;
 
-        let render_table =table.render({
+        let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/admin/api.user/getUserData'
-            ,where:{type:'user'}
-            ,parseData: function(res){
+            , url: '{:url("api.user/getUserData")}'
+            , where: {type: 'user'}
+            , parseData: function (res) {
                 return {
                     "code": 0,
                     "msg": res.msg,
@@ -44,48 +44,50 @@
                     "data": res.data
                 };
             }
-            ,cellMinWidth: 80
-            ,cols: [[
-                {field:'id', width:80, title: 'ID', sort: true}
-                ,{field:'name', width:120, title: '名称'}
-                ,{field:'username', width:120, title: '用户名'}
-                ,{field:'Sex', width:80, title: '性别',templet: function(d){
-                        if(d.Sex==1){
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'id', width: 80, title: 'ID', sort: true}
+                , {field: 'name', width: 120, title: '名称'}
+                , {field: 'username', width: 120, title: '用户名'}
+                , {
+                    field: 'Sex', width: 80, title: '性别', templet: function (d) {
+                        if (d.Sex == 1) {
                             return '男';
-                        }else{
+                        } else {
                             return '女';
                         }
-                    }}
+                    }
+                }
                 // ,{field:'Description', title: '描述'}
-                ,{field:'role_name', title: '角色'}
-                ,{ width:137, title: '操作',toolbar: '#barDemo'}
+                , {field: 'role_name', title: '角色'}
+                , {width: 137, title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
 
-        $('.sou').on('click',function (that) {
+        $('.sou').on('click', function (that) {
             render_table.reload({
-                where:{
-                    key:$('#key').val()
+                where: {
+                    key: $('#key').val()
                 }
             });
         });
 
 
-        table.on('tool(userTable)', function(obj){
+        table.on('tool(userTable)', function (obj) {
             let data = obj.data;
-            if(obj.event === 'edit'){
+            if (obj.event === 'edit') {
                 let index = layer.open({
-                    title:'修改'+data.name,
-                    type:2,
-                    content: ['/user/edit?type=user&id='+data.id, 'no'],
-                    area:['500px','450px'],
-                    success: function(layero, index) {
+                    title: '修改' + data.name,
+                    type: 2,
+                    content: ['{:url("user/edit")}?type=user&id=' + data.id, 'no'],
+                    area: ['500px', '450px'],
+                    success: function (layero, index) {
                     },
                 });
-            }else if (obj.event === 'del'){
-                layer.confirm('真的删除['+data.name+']?', function(index){
-                    curl.ajax('/admin/api.user/del','post',{id:data.id},function (res) {
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除[' + data.name + ']?', function (index) {
+                    curl.ajax('{:url("api.user/del")}', 'post', {id: data.id}, function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();
@@ -95,19 +97,19 @@
         });
 
         let active = {
-            AddAdmin: function(){
+            AddAdmin: function () {
                 let index = layer.open({
-                    title:'添加会员',
-                    type:2,
-                    content: ['/user/create?type=user', 'no'],
-                    area:['500px','450px'],
-                    success: function(layero, index) {
+                    title: '添加会员',
+                    type: 2,
+                    content: ['{:url("user/create")}?type=user', 'no'],
+                    area: ['500px', '450px'],
+                    success: function (layero, index) {
                     },
                 });
             }
         };
 
-        $('.btn_tools .layui-btn').on('click', function(){
+        $('.btn_tools .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });

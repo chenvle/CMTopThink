@@ -4,7 +4,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">名称</label>
         <div class="layui-input-block" style="margin-right: 50px;">
-            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="名称" class="layui-input">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="名称"
+                   class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -21,22 +22,22 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','form','curl'],function () {
+    }).use(['index', 'form', 'curl'], function () {
         let $ = layui.jquery,
             curl = layui.curl,
             form = layui.form;
 
         let iframe = parent.layer.getFrameIndex(window.name);
 
-        form.on('submit(add)', function(data){
-            data.field.id='{$info.id}';
-            curl.ajax('/admin/api.line/update','post',data.field,function (res) {
+        form.on('submit(add)', function (data) {
+            data.field.id = '{$info.id}';
+            curl.ajax('{:url("api.line/update")}', 'post', data.field, function (res) {
                 layer.msg(res.msg);
-                if(res.status){
+                if (res.status) {
                     setTimeout(function () {
                         parent.layer.close(iframe);
                         parent.location.reload();
-                    },1000)
+                    }, 1000)
                 }
             });
             return false;

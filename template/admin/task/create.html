@@ -1,189 +1,200 @@
 {extend name="base" /}
 {block name="body"}
-    <form class="layui-form" action="" lay-filter="user_form">
+<form class="layui-form" action="" lay-filter="user_form">
 
-        {if $is_create}
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">选择模板</label>
-            <div class="layui-input-inline" style="margin-right: 10px;">
-                <label>
-                    <select  lay-filter="template">
-                        <option value=""></option>
-                        {volist name="templates" id="vo"}
-                        <option value="{$vo.id}">{$vo.title}</option>
-                        {/volist}
-                    </select>
-                </label>
-            </div>
-        </div>
-        {else}
-        <input type="hidden" name="id" value="{$task.id}">
-        {/if}
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">选择线路</label>
-            <div class="layui-input-inline" style="margin-right: 10px;">
-                <label>
-                    <select name="line_id">
-                        <option value=""></option>
-                        {volist name="lines" id="vo"}
-                        <option value="{$vo.id}">{$vo.name}</option>
-                        {/volist}
-                    </select>
-                </label>
-            </div>
-        </div>
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">选择店铺</label>
-            <div class="layui-input-inline" style="margin-right: 10px;">
-                <label>
-                    <select name="store_id"  lay-filter="store">
-                        <option value=""></option>
-                        {volist name="stores" id="vo"}
-                        <option value="{$vo.id}">{$vo.name}</option>
-                        {/volist}
-                    </select>
-                </label>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">商品截图</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="img" lay-verify="required" autocomplete="off" placeholder="商品截图" class="layui-input" id="upload" style="cursor: pointer">
-                <img src="" id="img_display" class="none" style="max-height: 300px;cursor: pointer;margin-top: 10px;" />
-            </div>
-        </div>
-
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">商品价格</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="unit_price" id="unit_price" lay-verify="required" autocomplete="off" placeholder="商品价格" class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">单订单数量</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="amount" id="amount" lay-verify="required|number" autocomplete="off" placeholder="单订单购买数量" class="layui-input"
-                       onkeyup='this.value=this.value.replace(/\D/gi,"")'>
-            </div>
-        </div>
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">运费</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="freight" id="freight" lay-verify="required" autocomplete="off" placeholder="运费" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">快递类型</label>
-            <div class="layui-input-block">
-                <input type="radio" name="type" value="1" title="平台代码" checked="">
-                <input type="radio" name="type" value="2" title="自发空包">
-            </div>
-        </div>
-        <div class="clear"></div>
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">佣金价格</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="commission" id="commission" lay-verify="required" autocomplete="off" placeholder="佣金价格" class="layui-input" disabled>
-            </div>
-        </div>
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">当前汇率</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="exchange_rate" id="exchange_rate" lay-verify="required" autocomplete="off" value="<?php echo setting()['rate'];?>" placeholder="当前汇率" class="layui-input" disabled>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">冻结金额</label>
-            <div class="layui-input-inline" style="margin-right: 10px;">
-                <input type="text" name="frozen_amount" id="frozen_amount" lay-verify="required" autocomplete="off" placeholder="冻结金额" class="layui-input" disabled>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">任务期数</label>
-            <div class="layui-input-inline" style="margin-right: 10px;" id="periods">
-                <select name="periods" lay-filter="periods">
-                    <option value="">任务期数</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+    {if $is_create}
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">选择模板</label>
+        <div class="layui-input-inline" style="margin-right: 10px;">
+            <label>
+                <select lay-filter="template">
+                    <option value=""></option>
+                    {volist name="templates" id="vo"}
+                    <option value="{$vo.id}">{$vo.title}</option>
+                    {/volist}
                 </select>
-            </div>
+            </label>
         </div>
-        <div id="periods_content">
-
+    </div>
+    {else}
+    <input type="hidden" name="id" value="{$task.id}">
+    {/if}
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">选择线路</label>
+        <div class="layui-input-inline" style="margin-right: 10px;">
+            <label>
+                <select name="line_id">
+                    <option value=""></option>
+                    {volist name="lines" id="vo"}
+                    <option value="{$vo.id}">{$vo.name}</option>
+                    {/volist}
+                </select>
+            </label>
         </div>
-
-
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">关键词搜索</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="keyword" autocomplete="off" placeholder="关键词搜索" class="layui-input">
-            </div>
+    </div>
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">选择店铺</label>
+        <div class="layui-input-inline" style="margin-right: 10px;">
+            <label>
+                <select name="store_id" lay-filter="store">
+                    <option value=""></option>
+                    {volist name="stores" id="vo"}
+                    <option value="{$vo.id}">{$vo.name}</option>
+                    {/volist}
+                </select>
+            </label>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">搜索提醒</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="search_key" autocomplete="off" placeholder="搜索提醒" class="layui-input">
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品截图</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="img" lay-verify="required" autocomplete="off" placeholder="商品截图"
+                   class="layui-input" id="upload" style="cursor: pointer">
+            <img src="" id="img_display" class="none" style="max-height: 300px;cursor: pointer;margin-top: 10px;"/>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">订单留言</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="remark" autocomplete="off" placeholder="订单留言" class="layui-input">
-            </div>
+    </div>
+
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">商品价格</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="unit_price" id="unit_price" lay-verify="required" autocomplete="off"
+                   placeholder="商品价格" class="layui-input">
         </div>
+    </div>
+
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">单订单数量</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="amount" id="amount" lay-verify="required|number" autocomplete="off"
+                   placeholder="单订单购买数量" class="layui-input"
+                   onkeyup='this.value=this.value.replace(/\D/gi,"")'>
+        </div>
+    </div>
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">运费</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="freight" id="freight" lay-verify="required" autocomplete="off" placeholder="运费"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">快递类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="type" value="1" title="平台代码" checked="">
+            <input type="radio" name="type" value="2" title="自发空包">
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">佣金价格</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="commission" id="commission" lay-verify="required" autocomplete="off"
+                   placeholder="佣金价格" class="layui-input" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">当前汇率</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="exchange_rate" id="exchange_rate" lay-verify="required" autocomplete="off"
+                   value="<?php echo setting()['rate'];?>" placeholder="当前汇率" class="layui-input" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">冻结金额</label>
+        <div class="layui-input-inline" style="margin-right: 10px;">
+            <input type="text" name="frozen_amount" id="frozen_amount" lay-verify="required" autocomplete="off"
+                   placeholder="冻结金额" class="layui-input" disabled>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">任务期数</label>
+        <div class="layui-input-inline" style="margin-right: 10px;" id="periods">
+            <select name="periods" lay-filter="periods">
+                <option value="">任务期数</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+    </div>
+    <div id="periods_content">
+
+    </div>
 
 
-        <div class="layui-form-item layui-input-inline">
-            <label class="layui-form-label">动态评分</label>
-            <div class="layui-input-block">
-                <input type="radio" name="DSR" value="1" title="5分好评加评论" checked="">
-                <input type="radio" name="DSR" value="2" title="只要5分好评，不要评价">
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">关键词搜索</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="keyword" autocomplete="off" placeholder="关键词搜索" class="layui-input">
         </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">搜索提醒</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="search_key" autocomplete="off" placeholder="搜索提醒" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单留言</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="remark" autocomplete="off" placeholder="订单留言" class="layui-input">
+        </div>
+    </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">好评评语</label>
-            <div class="layui-input-block" style="margin-right: 10px;">
-                <input type="text" name="good_comment" lay-verify="required" autocomplete="off" placeholder="好评评语" class="layui-input">
-            </div>
-        </div>
 
-        <div class="layui-form-item" pane="">
-            <label class="layui-form-label">增值业务</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="sellers_how" lay-skin="primary" title="卖家秀【0.5元】" lay-filter="sellers_how">
-                <input type="checkbox" name="collection_shops" lay-skin="primary" title="收藏店铺【0.5元】" lay-filter="collection_shops">
-                <input type="checkbox" name="collection_products" lay-skin="primary" title="收藏产品【0.6元】" lay-filter="collection_products">
-            </div>
+    <div class="layui-form-item layui-input-inline">
+        <label class="layui-form-label">动态评分</label>
+        <div class="layui-input-block">
+            <input type="radio" name="DSR" value="1" title="5分好评加评论" checked="">
+            <input type="radio" name="DSR" value="2" title="只要5分好评，不要评价">
         </div>
+    </div>
 
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                {if $is_create}
-                <button class="layui-btn" lay-submit="" lay-filter="add">添加任务</button>
-                <button class="layui-btn" lay-submit="" lay-filter="template">保存为模板</button>
-                {else}
-                <button class="layui-btn" lay-submit="" lay-filter="template">保存</button>
-                {/if}
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">好评评语</label>
+        <div class="layui-input-block" style="margin-right: 10px;">
+            <input type="text" name="good_comment" lay-verify="required" autocomplete="off" placeholder="好评评语"
+                   class="layui-input">
         </div>
-    </form>
+    </div>
+
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label">增值业务</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="sellers_how" lay-skin="primary" title="卖家秀【0.5元】" lay-filter="sellers_how">
+            <input type="checkbox" name="collection_shops" lay-skin="primary" title="收藏店铺【0.5元】"
+                   lay-filter="collection_shops">
+            <input type="checkbox" name="collection_products" lay-skin="primary" title="收藏产品【0.6元】"
+                   lay-filter="collection_products">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            {if $is_create}
+            <button class="layui-btn" lay-submit="" lay-filter="add">添加任务</button>
+            <button class="layui-btn" lay-submit="" lay-filter="template">保存为模板</button>
+            {else}
+            <button class="layui-btn" lay-submit="" lay-filter="template">保存</button>
+            {/if}
+        </div>
+    </div>
+</form>
 <div class="none" id="periods_content_template">
     <div class="layui-form-item layui-input-inline">
         <label class="layui-form-label">发布时间</label>
         <div class="layui-input-block" style="margin-right: 10px;">
-            <input type="text" name="task_date[n_i]" id="task_date_n_i" lay-verify="required" autocomplete="off" placeholder="发布时间" class="layui-input task_date">
+            <input type="text" name="task_date[n_i]" id="task_date_n_i" lay-verify="required" autocomplete="off"
+                   placeholder="发布时间" class="layui-input task_date">
         </div>
     </div>
 
     <div class="layui-form-item layui-input-inline">
         <label class="layui-form-label">发布任务数</label>
         <div class="layui-input-block" style="margin-right: 10px;">
-            <input type="text" name="task_number[n_i]" lay-verify="required|number" value="" autocomplete="off" placeholder="发布任务数" class="layui-input task_num_n">
+            <input type="text" name="task_number[n_i]" lay-verify="required|number" value="" autocomplete="off"
+                   placeholder="发布任务数" class="layui-input task_num_n">
         </div>
     </div>
     <div class="layui-clear"></div>
@@ -197,33 +208,33 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','form','curl','laydate','upload'],function () {
+    }).use(['index', 'form', 'curl', 'laydate', 'upload'], function () {
         let $ = layui.jquery,
             curl = layui.curl,
             upload = layui.upload,
             laydate = layui.laydate,
             form = layui.form;
 
-        let sellers_how =false,collection_shops = false,collection_products = false;
+        let sellers_how = false, collection_shops = false, collection_products = false;
 
         laydate.render({
-            type:'datetime',
+            type: 'datetime',
             elem: '#periods_content .task_date'
         });
 
 
-        form.on('submit(template)', function(data){
+        form.on('submit(template)', function (data) {
             let field = data.field;
             layer.prompt({
-                title:'请输入标题',
-                value:'{if !$is_create}{$task.title}{/if}',
-            },function(value, index, elem){
+                title: '请输入标题',
+                value: '{if !$is_create}{$task.title}{/if}',
+            }, function (value, index, elem) {
                 field.title = value;
-                curl.ajax('/admin/api.task/store','post',field,function (res) {
-                    layer.msg(res.msg);
-                },
+                curl.ajax('{:url("api.task/store")}', 'post', field, function (res) {
+                        layer.msg(res.msg);
+                    },
                     function (err) {
-                        if(err.responseJSON.code===10501){
+                        if (err.responseJSON.code === 10501) {
                             layer.msg('已存在');
                         }
                     });
@@ -234,50 +245,50 @@
 
         /*{if $is_create}*/
 
-        form.on('submit(add)', function(data){
-            curl.ajax('/admin/api.task/store','post',data.field,function (res) {
+        form.on('submit(add)', function (data) {
+            curl.ajax('{:url("api.task/store")}', 'post', data.field, function (res) {
                     layer.msg(res.msg);
-                    if(res.status){
+                    if (res.status) {
                         window.parent.document.getElementById("update").click();
                         setTimeout(function () {
                             top.layui.admin.closeThisTabs();
-                        },1000)
+                        }, 1000)
                     }
                 },
                 function (err) {
-                    if(err.responseJSON.code===10501){
+                    if (err.responseJSON.code === 10501) {
                         layer.msg('已存在');
                     }
                 });
             return false;
         });
 
-        form.on('select(template)', function(data){
-            if(data.value){
-                curl.ajax('/admin/api.template/find','post',{id:data.value},function (res) {
-                        if(res.status){
-                            form.val('user_form',{
-                                'line_id':res.data.line_id,
-                                'store_id':res.data.store_id,
-                                'img':res.data.img,
-                                'unit_price':res.data.unit_price,
-                                'freight':res.data.freight,
-                                'type':res.data.type,
-                                'commission':res.data.commission,
-                                'exchange_rate':res.data.exchange_rate,
+        form.on('select(template)', function (data) {
+            if (data.value) {
+                curl.ajax('{:url("api.template/find")}', 'post', {id: data.value}, function (res) {
+                        if (res.status) {
+                            form.val('user_form', {
+                                'line_id': res.data.line_id,
+                                'store_id': res.data.store_id,
+                                'img': res.data.img,
+                                'unit_price': res.data.unit_price,
+                                'freight': res.data.freight,
+                                'type': res.data.type,
+                                'commission': res.data.commission,
+                                'exchange_rate': res.data.exchange_rate,
                                 // 'frozen_amount':res.data.frozen_amount,
-                                'amount':res.data.amount,
-                                'periods':res.data.periods,
-                                'keyword':res.data.keyword,
-                                'search_key':res.data.search_key,
-                                'remark':res.data.remark,
-                                'DSR':res.data.DSR,
-                                'good_comment':res.data.good_comment,
-                                'sellers_how':res.data.sellers_how,
-                                'collection_shops':res.data.collection_shops,
-                                'collection_products':res.data.collection_products
+                                'amount': res.data.amount,
+                                'periods': res.data.periods,
+                                'keyword': res.data.keyword,
+                                'search_key': res.data.search_key,
+                                'remark': res.data.remark,
+                                'DSR': res.data.DSR,
+                                'good_comment': res.data.good_comment,
+                                'sellers_how': res.data.sellers_how,
+                                'collection_shops': res.data.collection_shops,
+                                'collection_products': res.data.collection_products
                             });
-                            $('#img_display').attr('src',res.data.img).css('display','block');
+                            $('#img_display').attr('src', res.data.img).css('display', 'block');
 
                             sellers_how = !!res.data.sellers_how;
                             collection_shops = !!res.data.collection_shops;
@@ -288,19 +299,18 @@
                             periods_content.html('');
 
 
-                            for (let i =0;i<res.data.periods;i++)
-                            {
+                            for (let i = 0; i < res.data.periods; i++) {
                                 let html = periods_content_template.html();
                                 periods_content.append(html);
                                 let task_date = periods_content.find('input[name="task_date[n_i]"]');
                                 let task_number = periods_content.find('input[name="task_number[n_i]"]');
-                                task_date.attr('id','task_date_'+i);
-                                task_date.attr('name','task_date['+i+']');
-                                task_number.attr('name','task_number['+i+']');
+                                task_date.attr('id', 'task_date_' + i);
+                                task_date.attr('name', 'task_date[' + i + ']');
+                                task_number.attr('name', 'task_number[' + i + ']');
 
                                 laydate.render({
-                                    type:'datetime',
-                                    elem: '#task_date_'+i
+                                    type: 'datetime',
+                                    elem: '#task_date_' + i
                                 });
                             }
                             $('#task_date_0').val(res.data.task_date[0]);
@@ -314,7 +324,7 @@
                             task_num();
                             count();
 
-                        }else{
+                        } else {
                             layer.msg(res.msg);
                         }
                     },
@@ -327,91 +337,90 @@
 
         let uploadInst = upload.render({
             elem: '#upload'
-            ,url: '/admin/api.upload/img'
-            ,before: function(obj){
+            , url: '{:url("api.upload/img")}'
+            , before: function (obj) {
 
             }
-            ,done: function(res){
+            , done: function (res) {
                 //如果上传失败
-                if(res.code > 0){
+                if (res.code > 0) {
                     return layer.msg('上传失败');
                 }
                 //上传成功
                 layer.msg('上传成功');
                 $('#upload').val(res.data.src);
-                $('#img_display').attr('src',res.data.src).css('display','block');
+                $('#img_display').attr('src', res.data.src).css('display', 'block');
             }
-            ,error: function(){
+            , error: function () {
                 layer.msg('上传失败，请重试');
             }
         });
 
-        $('#img_display').on('click',function () {
-            $(this).attr('src','').css('display','none');
+        $('#img_display').on('click', function () {
+            $(this).attr('src', '').css('display', 'none');
             $('#upload').val('');
         });
 
         /*字段计算价格*/
 
-        $('#unit_price').bind('input propertychange', function() {
+        $('#unit_price').bind('input propertychange', function () {
             clearNoNum(this);
             getCommission();
             count();
         });
-        $('#freight').bind('input propertychange', function() {
+        $('#freight').bind('input propertychange', function () {
             clearNoNum(this);
             count();
         });
-        $('#commission').bind('input propertychange', function() {
+        $('#commission').bind('input propertychange', function () {
             clearNoNum(this);
             count();
         });
-        $('#frozen_amount').bind('input propertychange', function() {
+        $('#frozen_amount').bind('input propertychange', function () {
             clearNoNum(this);
             count();
         });
-        $('#amount').bind('input propertychange', function() {
+        $('#amount').bind('input propertychange', function () {
             count();
         });
 
         task_num();
 
-        function task_num(){
-            $('.task_num_n').bind('input propertychange', function() {
+        function task_num() {
+            $('.task_num_n').bind('input propertychange', function () {
                 count();
             });
         }
 
-        form.on('checkbox(sellers_how)', function(data){
+        form.on('checkbox(sellers_how)', function (data) {
             sellers_how = !!data.elem.checked;
             count();
         });
-        form.on('checkbox(collection_shops)', function(data){
+        form.on('checkbox(collection_shops)', function (data) {
             collection_shops = !!data.elem.checked;
             count();
         });
-        form.on('checkbox(collection_products)', function(data){
+        form.on('checkbox(collection_products)', function (data) {
             collection_products = !!data.elem.checked;
             count();
         });
 
-        form.on('select(periods)', function(data){
+        form.on('select(periods)', function (data) {
             let periods_content = $('#periods_content');
             let periods_content_template = $('#periods_content_template');
             periods_content.html('');
-            for (let i =0;i<data.value;i++)
-            {
+            for (let i = 0; i < data.value; i++) {
                 let html = periods_content_template.html();
                 periods_content.append(html);
                 let task_date = periods_content.find('input[name="task_date[n_i]"]');
                 let task_number = periods_content.find('input[name="task_number[n_i]"]');
-                task_date.attr('id','task_date_'+i);
-                task_date.attr('name','task_date['+i+']');
-                task_number.attr('name','task_number['+i+']');
+                task_date.attr('id', 'task_date_' + i);
+                task_date.attr('name', 'task_date[' + i + ']');
+                task_number.attr('name', 'task_number[' + i + ']');
 
                 laydate.render({
-                    type:'datetime',
-                    elem: '#task_date_'+i
+                    type: 'datetime',
+                    elem: '#task_date_' + i
                 });
             }
             task_num();
@@ -431,31 +440,36 @@
             let task_input = $('.task_num_n');
             let periods = $('#periods .layui-this').attr('lay-value');
 
-            if(periods > 0){
-                for (let i = 0;i<task_input.length -1 ;i++){
-                    task_sum = (task_sum*100 + $(task_input[i]).val()*100)/100;
+            if (periods > 0) {
+                for (let i = 0; i < task_input.length - 1; i++) {
+                    task_sum = (task_sum * 100 + $(task_input[i]).val() * 100) / 100;
                 }
             }
 
-            if( unit_price !== '' && amount !== '' && commission !== '' && exchange_rate !== '' && freight !== '' && task_sum !==0){
+            if (unit_price !== '' && amount !== '' && commission !== '' && exchange_rate !== '' && freight !== '' && task_sum !== 0) {
 
-                let number = (unit_price * 100) * amount * ( exchange_rate *100 );
-                let sum =  number + commission * 10000 + freight * 10000;
+                let number = (unit_price * 100) * amount * (exchange_rate * 100);
+                let sum = number + commission * 10000 + freight * 10000;
 
-                if(sellers_how){sum = sum + 5000}
-                if(collection_shops){sum = sum + 5000}
-                if(collection_products){sum = sum + 5000}
+                if (sellers_how) {
+                    sum = sum + 5000
+                }
+                if (collection_shops) {
+                    sum = sum + 5000
+                }
+                if (collection_products) {
+                    sum = sum + 5000
+                }
                 $('#frozen_amount').val(sum * task_sum / 10000);
             }
         }
 
 
-
         //佣金
         async function getCommission() {
             let unit_price = $('#unit_price').val();
-            curl.ajax(`/api.commission/get`,'get',{price:unit_price},function (res) {
-                if(res.status){
+            curl.ajax(`{:url("api.commission/get")}`, 'get', {price: unit_price}, function (res) {
+                if (res.status) {
                     $('#commission').val(res.data);
                 }
             })
@@ -463,48 +477,44 @@
 
 
         //保留两位小数
-        function clearNoNum(obj){
-            obj.value = obj.value.replace(/[^\d.]/g,"");
-            obj.value = obj.value.replace(/^\./g,"");
-            obj.value = obj.value.replace(/\.{2,}/g,".");
-            obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
-            obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
-            if(obj.value.indexOf(".")< 0 && obj.value !=""){
-                obj.value= parseFloat(obj.value);
+        function clearNoNum(obj) {
+            obj.value = obj.value.replace(/[^\d.]/g, "");
+            obj.value = obj.value.replace(/^\./g, "");
+            obj.value = obj.value.replace(/\.{2,}/g, ".");
+            obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+            obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+            if (obj.value.indexOf(".") < 0 && obj.value != "") {
+                obj.value = parseFloat(obj.value);
             }
         }
-
-
-
-
 
 
         //以下是编辑
 
         /*{if !$is_create}*/
 
-        form.val('user_form',{
-            'line_id':'{$task.line_id}',
-            'store_id':'{$task.store_id}',
-            'img':'{$task.img}',
-            'unit_price':'{$task.unit_price}',
-            'freight':'{$task.freight}',
-            'type':'{$task.type}',
-            'commission':'{$task.commission}',
-            'exchange_rate':'{$task.exchange_rate}',
+        form.val('user_form', {
+            'line_id': '{$task.line_id}',
+            'store_id': '{$task.store_id}',
+            'img': '{$task.img}',
+            'unit_price': '{$task.unit_price}',
+            'freight': '{$task.freight}',
+            'type': '{$task.type}',
+            'commission': '{$task.commission}',
+            'exchange_rate': '{$task.exchange_rate}',
             // 'frozen_amount':res.data.frozen_amount,
-            'amount':'{$task.amount}',
-            'periods':'{$task.periods}',
-            'keyword':'{$task.keyword}',
-            'search_key':'{$task.search_key}',
-            'remark':'{$task.remark}',
-            'DSR':'{$task.DSR}',
-            'good_comment':'{$task.good_comment}',
-            'sellers_how':'{$task.sellers_how}',
-            'collection_shops':'{$task.collection_shops}',
-            'collection_products':'{$task.collection_products}'
+            'amount': '{$task.amount}',
+            'periods': '{$task.periods}',
+            'keyword': '{$task.keyword}',
+            'search_key': '{$task.search_key}',
+            'remark': '{$task.remark}',
+            'DSR': '{$task.DSR}',
+            'good_comment': '{$task.good_comment}',
+            'sellers_how': '{$task.sellers_how}',
+            'collection_shops': '{$task.collection_shops}',
+            'collection_products': '{$task.collection_products}'
         });
-        $('#img_display').attr('src','{$task.img}').css('display','block');
+        $('#img_display').attr('src', '{$task.img}').css('display', 'block');
 
         let periods = {$task.periods};
 
@@ -512,19 +522,18 @@
         let periods_content_template = $('#periods_content_template');
         periods_content.html('');
 
-        for (let i =0;i<periods;i++)
-        {
+        for (let i = 0; i < periods; i++) {
             let html = periods_content_template.html();
             periods_content.append(html);
             let task_date = periods_content.find('input[name="task_date[n_i]"]');
             let task_number = periods_content.find('input[name="task_number[n_i]"]');
-            task_date.attr('id','task_date_'+i);
-            task_date.attr('name','task_date['+i+']');
-            task_number.attr('name','task_number['+i+']');
+            task_date.attr('id', 'task_date_' + i);
+            task_date.attr('name', 'task_date[' + i + ']');
+            task_number.attr('name', 'task_number[' + i + ']');
 
             laydate.render({
-                type:'datetime',
-                elem: '#task_date_'+i
+                type: 'datetime',
+                elem: '#task_date_' + i
             });
         }
 

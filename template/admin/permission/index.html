@@ -33,7 +33,7 @@
 
         let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/admin/api.permission/getRoleData'
+            ,url:'{:url("api.permission/getRoleData")}'
             ,where:{type:'user'}
             ,parseData: function(res){
                 return {
@@ -68,14 +68,14 @@
                 let index = layer.open({
                     title:'修改'+data.name,
                     type:2,
-                    content: ['/permission/edit?id='+data.id, 'no'],
+                    content: ['{:url("permission/edit")}?id='+data.id, 'no'],
                     area:['500px','300px'],
                     success: function(layero, index) {
                     },
                 });
             }else if (obj.event === 'del'){
                 layer.confirm('真的删除['+data.name+']?', function(index){
-                    curl.ajax('/admin/api.permission/del','post',{id:data.id},function (res) {
+                    curl.ajax('{:url("api.permission/del")}','post',{id:data.id},function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();
@@ -89,7 +89,7 @@
                 let index = layer.open({
                     title:'添加权限',
                     type:2,
-                    content: ['/permission/create', 'no'],
+                    content: ['{:url("permission/create")}', 'no'],
                     area:['500px','300px'],
                     success: function(layero, index) {
                     },

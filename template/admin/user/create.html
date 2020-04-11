@@ -1,45 +1,48 @@
 {extend name="base" /}
 {block name="body"}
-    <form class="layui-form" action="" lay-filter="user_form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">角色</label>
-            <div class="layui-input-block">
-                {volist name="roles" id="vo"}
-                <input type="checkbox" name="Roles[{$vo.id}]" lay-skin="primary" title="{$vo.name}" value="{$vo.id}">
-                {/volist}
-            </div>
+<form class="layui-form" action="" lay-filter="user_form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色</label>
+        <div class="layui-input-block">
+            {volist name="roles" id="vo"}
+            <input type="checkbox" name="Roles[{$vo.id}]" lay-skin="primary" title="{$vo.name}" value="{$vo.id}">
+            {/volist}
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">账号</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="账号" class="layui-input">
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">账号</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="账号"
+                   class="layui-input">
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">密码</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="password" lay-verify="required" autocomplete="off" placeholder="密码" class="layui-input">
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="password" lay-verify="required" autocomplete="off" placeholder="密码"
+                   class="layui-input">
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">昵称</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="昵称" class="layui-input">
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">昵称</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="昵称"
+                   class="layui-input">
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">性别</label>
-            <div class="layui-input-block">
-                <input type="radio" name="Sex" value="1" title="男" checked="">
-                <input type="radio" name="Sex" value="2" title="女">
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="Sex" value="1" title="男" checked="">
+            <input type="radio" name="Sex" value="2" title="女">
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
         </div>
-    </form>
+    </div>
+</form>
 {/block}
 {block name="script"}
 <script>
@@ -47,24 +50,24 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','form','curl'],function () {
+    }).use(['index', 'form', 'curl'], function () {
         let $ = layui.jquery,
             curl = layui.curl,
             form = layui.form;
 
         let iframe = parent.layer.getFrameIndex(window.name);
-        form.on('submit(add)', function(data){
-            curl.ajax('/admin/api.user/store','post',data.field,function (res) {
-                layer.msg(res.msg);
-                if(res.status){
-                    setTimeout(function () {
-                        parent.layer.close(iframe);
-                        parent.location.reload();
-                    },1000)
-                }
-            },
+        form.on('submit(add)', function (data) {
+            curl.ajax('{:url("api.user/store")}', 'post', data.field, function (res) {
+                    layer.msg(res.msg);
+                    if (res.status) {
+                        setTimeout(function () {
+                            parent.layer.close(iframe);
+                            parent.location.reload();
+                        }, 1000)
+                    }
+                },
                 function (err) {
-                    if(err.responseJSON.code===10501){
+                    if (err.responseJSON.code === 10501) {
                         layer.msg('已存在');
                     }
                 });

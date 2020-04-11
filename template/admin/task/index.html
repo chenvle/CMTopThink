@@ -31,7 +31,7 @@
 
         let render_table = table.render({
             elem: '#table_lay'
-            , url: '/admin/api.task/getTaskData'
+            , url: '{:url("api.task/getTaskData")}'
             , parseData: function (res) {
                 return {
                     "code": 0,
@@ -127,7 +127,7 @@
                 let index = layer.open({
                     title: '添加会员',
                     type: 2,
-                    content: ['/user/create?type=user', 'no'],
+                    content: ['{:url("user/create")}?type=user', 'no'],
                     area: ['500px', '450px'],
                     success: function (layero, index) {
                     },

@@ -34,10 +34,12 @@ class Auth
      */
     public function handle($request, Closure $next)
     {
-        $controller = $request->controller();
-        $action     = $request->action();
-        $route = $controller.'/'.$action;
+//        $controller = $request->controller();
+//        $action     = $request->action();
+//        $route = $controller.'/'.$action;
+        $route = $request->pathinfo();
         $App = App('http')->getName();
+
 
         if($App == 'admin'){
             if(in_array($route,$this->no_auth_controller)){

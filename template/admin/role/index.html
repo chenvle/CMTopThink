@@ -29,14 +29,14 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','table','curl'],function () {
-        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+    }).use(['index', 'table', 'curl'], function () {
+        let $ = layui.jquery, table = layui.table, curl = layui.curl;
 
         let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/admin/api.role/getRoleData'
-            ,where:{type:'user'}
-            ,parseData: function(res){
+            , url: '{:url("api.role/getRoleData")}'
+            , where: {type: 'user'}
+            , parseData: function (res) {
                 return {
                     "code": 0,
                     "msg": res.msg,
@@ -44,77 +44,79 @@
                     "data": res.data.data
                 };
             }
-            ,cellMinWidth: 80
-            ,cols: [[
-                {field:'id', width:80, title: 'ID', sort: true}
-                ,{field:'name',  title: '名称'}
-                ,{field:'type', width:120, title: '类型',templet: function(d){
-                        if(d.type=='admin'){
-                            if(d.name == 'admin'){
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'id', width: 80, title: 'ID', sort: true}
+                , {field: 'name', title: '名称'}
+                , {
+                    field: 'type', width: 120, title: '类型', templet: function (d) {
+                        if (d.type == 'admin') {
+                            if (d.name == 'admin') {
                                 return '超级管理员';
                             }
                             return '管理员';
-                        }else{
+                        } else {
                             return '会员';
                         }
-                    }}
-                ,{ width:160, title: '操作',toolbar: '#barDemo'}
+                    }
+                }
+                , {width: 160, title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
-        $('.sou').on('click',function (that) {
+        $('.sou').on('click', function (that) {
             render_table.reload({
-                where:{
-                    key:$('#key').val()
+                where: {
+                    key: $('#key').val()
                 }
             });
         });
 
-        table.on('tool(userTable)', function(obj){
+        table.on('tool(userTable)', function (obj) {
             let data = obj.data;
-            if(obj.event === 'edit'){
+            if (obj.event === 'edit') {
                 let index = layer.open({
-                    title:'修改'+data.name,
-                    type:2,
-                    content: ['/role/edit?id='+data.id, 'no'],
-                    area:['500px','250px'],
-                    success: function(layero, index) {
+                    title: '修改' + data.name,
+                    type: 2,
+                    content: ['{:url("role/edit")}?id=' + data.id, 'no'],
+                    area: ['500px', '250px'],
+                    success: function (layero, index) {
                     },
                 });
-            }else if (obj.event === 'del'){
-                layer.confirm('真的删除['+data.name+']?', function(index){
-                    curl.ajax('/admin/api.role/del','post',{id:data.id},function (res) {
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除[' + data.name + ']?', function (index) {
+                    curl.ajax('{:url("api.role/del")}', 'post', {id: data.id}, function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();
                     layer.close(index);
                 });
-            }else if (obj.event === 'power'){
+            } else if (obj.event === 'power') {
                 let index = layer.open({
-                    title:'修改'+data.name,
-                    type:2,
-                    content: ['/role/power?id='+data.id, 'no'],
-                    area:['500px','500px'],
-                    success: function(layero, index) {
+                    title: '修改' + data.name,
+                    type: 2,
+                    content: ['{:url("role/power")}?id=' + data.id, 'no'],
+                    area: ['500px', '500px'],
+                    success: function (layero, index) {
                     },
                 });
             }
         });
 
         let active = {
-            AddAdmin: function(){
+            AddAdmin: function () {
                 let index = layer.open({
-                    title:'添加角色',
-                    type:2,
-                    content: ['/role/create', 'no'],
-                    area:['500px','250px'],
-                    success: function(layero, index) {
+                    title: '添加角色',
+                    type: 2,
+                    content: ['{:url("role/create")}', 'no'],
+                    area: ['500px', '250px'],
+                    success: function (layero, index) {
                     },
                 });
             }
         };
 
-        $('.btn_tools .layui-btn').on('click', function(){
+        $('.btn_tools .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });

@@ -15,14 +15,16 @@
                             }
                         ?>
             {/volist}
-            <input type="checkbox" name="Roles[{$vo.id}]" lay-skin="primary" title="{$vo.name}" value="{$vo.id}" {if $value}checked=""{/if}>
+            <input type="checkbox" name="Roles[{$vo.id}]" lay-skin="primary" title="{$vo.name}" value="{$vo.id}" {if
+                   $value}checked="" {/if}>
             {/volist}
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">账号</label>
         <div class="layui-input-block" style="margin-right: 50px;">
-            <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="账号" class="layui-input">
+            <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="账号"
+                   class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -34,7 +36,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">昵称</label>
         <div class="layui-input-block" style="margin-right: 50px;">
-            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="昵称" class="layui-input">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="昵称"
+                   class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -58,22 +61,22 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','form','curl'],function () {
+    }).use(['index', 'form', 'curl'], function () {
         let $ = layui.jquery,
             curl = layui.curl,
             form = layui.form;
 
         let iframe = parent.layer.getFrameIndex(window.name);
 
-        form.on('submit(add)', function(data){
-            data.field.id='{$info.id}';
-            curl.ajax('/admin/api.user/update','post',data.field,function (res) {
+        form.on('submit(add)', function (data) {
+            data.field.id = '{$info.id}';
+            curl.ajax('{:url("api.user/update")}', 'post', data.field, function (res) {
                 layer.msg(res.msg);
-                if(res.status){
+                if (res.status) {
                     setTimeout(function () {
                         parent.layer.close(iframe);
                         parent.location.reload();
-                    },1000)
+                    }, 1000)
                 }
             });
             return false;

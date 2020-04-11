@@ -27,13 +27,13 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','table','curl'],function () {
-        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+    }).use(['index', 'table', 'curl'], function () {
+        let $ = layui.jquery, table = layui.table, curl = layui.curl;
 
-        let render_table =table.render({
+        let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/admin/api.notice/getNoticeData'
-            ,parseData: function(res){
+            , url: '{:url("api.notice/getNoticeData")}'
+            , parseData: function (res) {
                 return {
                     "code": 0,
                     "msg": res.msg,
@@ -41,42 +41,42 @@
                     "data": res.data.data
                 };
             }
-            ,page:true
-            ,limit:20
-            ,cellMinWidth: 80
-            ,cols: [[
-                {field:'id', width:80, title: 'ID', sort: true}
-                ,{field:'title', title: '名称'}
-                ,{field:'start_time', title: '开始时间'}
-                ,{field:'end_time', title: '结束时间'}
-                ,{ width:137, title: '操作',toolbar: '#barDemo'}
+            , page: true
+            , limit: 20
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'id', width: 80, title: 'ID', sort: true}
+                , {field: 'title', title: '名称'}
+                , {field: 'start_time', title: '开始时间'}
+                , {field: 'end_time', title: '结束时间'}
+                , {width: 137, title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
 
-        $('.sou').on('click',function (that) {
+        $('.sou').on('click', function (that) {
             render_table.reload({
-                where:{
-                    key:$('#key').val()
+                where: {
+                    key: $('#key').val()
                 }
             });
         });
 
 
-        table.on('tool(userTable)', function(obj){
+        table.on('tool(userTable)', function (obj) {
             let data = obj.data;
-            if(obj.event === 'edit'){
+            if (obj.event === 'edit') {
                 let index = layer.open({
-                    title:'修改'+data.title,
-                    type:2,
-                    content: ['/notice/edit?id='+data.id, 'no'],
-                    area:['500px','500px'],
-                    success: function(layero, index) {
+                    title: '修改' + data.title,
+                    type: 2,
+                    content: ['{:url("notice/edit")}?id=' + data.id, 'no'],
+                    area: ['500px', '500px'],
+                    success: function (layero, index) {
                     },
                 });
-            }else if (obj.event === 'del'){
-                layer.confirm('真的删除['+data.name+']?', function(index){
-                    curl.ajax('/admin/api.notice/del','post',{id:data.id},function (res) {
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除[' + data.name + ']?', function (index) {
+                    curl.ajax('{:url("api.notice/del")}', 'post', {id: data.id}, function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();
@@ -86,19 +86,19 @@
         });
 
         let active = {
-            AddAdmin: function(){
+            AddAdmin: function () {
                 let index = layer.open({
-                    title:'添加公告',
-                    type:2,
-                    content: ['/notice/create', 'no'],
-                    area:['500px','500px'],
-                    success: function(layero, index) {
+                    title: '添加公告',
+                    type: 2,
+                    content: ['{:url("notice/create")}', 'no'],
+                    area: ['500px', '500px'],
+                    success: function (layero, index) {
                     },
                 });
             }
         };
 
-        $('.btn_tools .layui-btn').on('click', function(){
+        $('.btn_tools .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });

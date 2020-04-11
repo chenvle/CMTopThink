@@ -26,13 +26,13 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','table','curl'],function () {
-        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+    }).use(['index', 'table', 'curl'], function () {
+        let $ = layui.jquery, table = layui.table, curl = layui.curl;
 
-        let render_table =table.render({
+        let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/admin/api.task/getTaskData'
-            ,parseData: function(res){
+            , url: '{:url("api.task/getTaskData")}'
+            , parseData: function (res) {
                 return {
                     "code": 0,
                     "msg": res.msg,
@@ -40,67 +40,75 @@
                     "data": res.data.data
                 };
             }
-            ,page:true
-            ,limit:20
-            ,where:{status:3}
-            ,cellMinWidth: 100
-            ,cols: [[
-                {field:'id', width:80, title: 'ID'}
-                ,{field:'tid', title: '订单号',width:180}
-                ,{field:'line', title: '线路',width:100,templet: function(d){
-                        if(d.line){
+            , page: true
+            , limit: 20
+            , where: {status: 3}
+            , cellMinWidth: 100
+            , cols: [[
+                {field: 'id', width: 80, title: 'ID'}
+                , {field: 'tid', title: '订单号', width: 180}
+                , {
+                    field: 'line', title: '线路', width: 100, templet: function (d) {
+                        if (d.line) {
                             return d.line.name;
-                        }else{
+                        } else {
                             return '';
                         }
-                    }}
-                ,{field:'frozen_amount',width:100, title: '商品总金额'}
-                ,{field:'commission',width:100,  title: '佣金'}
-                ,{field:'sellers_how',width:120,  title: '增值业务金额',templet: function(d){
+                    }
+                }
+                , {field: 'frozen_amount', width: 100, title: '商品总金额'}
+                , {field: 'commission', width: 100, title: '佣金'}
+                , {
+                    field: 'sellers_how', width: 120, title: '增值业务金额', templet: function (d) {
                         let sum = 0;
-                        if(d.sellers_how){sum = (sum * 100 + 0.5 * 100)/100}
-                        if(d.collection_shops){sum = (sum * 100 + 0.5 * 100)/100}
-                        if(d.collection_products){sum = (sum * 100 + 0.5 * 100)/100}
+                        if (d.sellers_how) {
+                            sum = (sum * 100 + 0.5 * 100) / 100
+                        }
+                        if (d.collection_shops) {
+                            sum = (sum * 100 + 0.5 * 100) / 100
+                        }
+                        if (d.collection_products) {
+                            sum = (sum * 100 + 0.5 * 100) / 100
+                        }
                         return sum;
-                    }}
-                ,{field:'shop_order_id', title: '商城交易号'}
-                ,{field:'status',width:100,  title: '订单状态'}
-                ,{field:'admin_remark',width:100,  title: '取消原因'}
-                ,{field:'create_time',width:110,  title: '创建时间'}
-                ,{field:'task_date',width:170,  title: '发布时间'}
-                ,{ width:137, title: '操作',toolbar: '#barDemo'}
+                    }
+                }
+                , {field: 'shop_order_id', title: '商城交易号'}
+                , {field: 'status', width: 100, title: '订单状态'}
+                , {field: 'admin_remark', width: 100, title: '取消原因'}
+                , {field: 'create_time', width: 110, title: '创建时间'}
+                , {field: 'task_date', width: 170, title: '发布时间'}
+                , {width: 137, title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
 
-        $('.sou').on('click',function (that) {
+        $('.sou').on('click', function (that) {
             render_table.reload({
-                where:{
-                    key:$('#key').val()
+                where: {
+                    key: $('#key').val()
                 }
             });
         });
 
 
-        table.on('tool(userTable)', function(obj){
+        table.on('tool(userTable)', function (obj) {
             let data = obj.data;
-            if(obj.event === 'edit'){
+            if (obj.event === 'edit') {
                 let index2 = layer.open({
-                    title:'查看任务'+data.tid,
-                    type:2,
-                    content: ['/task/show?id='+data.id],
+                    title: '查看任务' + data.tid,
+                    type: 2,
+                    content: ['{:url("task/show")}?id=' + data.id],
                     area: ['70%', '80%'],
-                    success: function(layero, index) {
+                    success: function (layero, index) {
                     },
                 });
             }
         });
 
-        let active = {
+        let active = {};
 
-        };
-
-        $('.btn_tools .layui-btn').on('click', function(){
+        $('.btn_tools .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });

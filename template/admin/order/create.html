@@ -1,80 +1,85 @@
 {extend name="base" /}
 {block name="body"}
-    <form class="layui-form" action="" lay-filter="user_form">
-        <input type="hidden" name="type" lay-verify="required" value="{$type}">
-        <div class="layui-form-item">
-            <label class="layui-form-label">金额</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="price" lay-verify="required" autocomplete="off" placeholder="金额" class="layui-input">
-            </div>
+<form class="layui-form" action="" lay-filter="user_form">
+    <input type="hidden" name="type" lay-verify="required" value="{$type}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">金额</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="price" lay-verify="required" autocomplete="off" placeholder="金额"
+                   class="layui-input">
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">账户类型</label>
-            <div class="layui-input-block">
-                <input type="radio" name="card_type" value="1" title="支付宝" checked="">
-                <input type="radio" name="card_type" value="2" title="银行账号">
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">账户类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="card_type" value="1" title="支付宝" checked="">
+            <input type="radio" name="card_type" value="2" title="银行账号">
         </div>
+    </div>
 
-        {if $type!=1}
-        <div class="layui-form-item">
-            <label class="layui-form-label">账号</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="交易号流水号" class="layui-input">
-            </div>
+    {if $type!=1}
+    <div class="layui-form-item">
+        <label class="layui-form-label">账号</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="交易号流水号"
+                   class="layui-input">
         </div>
-        {/if}
-        <div class="layui-form-item">
-            <label class="layui-form-label">真实姓名</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="真实姓名" class="layui-input">
-            </div>
+    </div>
+    {/if}
+    <div class="layui-form-item">
+        <label class="layui-form-label">真实姓名</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="真实姓名"
+                   class="layui-input">
         </div>
+    </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="remark" lay-verify="required" autocomplete="off" placeholder="备注" class="layui-input">
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="remark" lay-verify="required" autocomplete="off" placeholder="备注"
+                   class="layui-input">
         </div>
+    </div>
 
-        {if $type==1}
-        <div class="layui-form-item">
-            <label class="layui-form-label">交易流水号</label>
-            <div class="layui-input-block" style="margin-right: 50px;">
-                <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="交易号流水号" class="layui-input">
-            </div>
+    {if $type==1}
+    <div class="layui-form-item">
+        <label class="layui-form-label">交易流水号</label>
+        <div class="layui-input-block" style="margin-right: 50px;">
+            <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="交易号流水号"
+                   class="layui-input">
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">充值账号</label>
-            <div class="layui-input-block" style="margin-right: 50px;overflow: hidden">
-                <div class="layui-row layui-col-space5">
-                    <div class="layui-col-xs6">
-                        {if $sets.qr_img != ''}<img src="{$sets.qr_img}" style="max-height: 180px;max-width: 100%"/>{/if}
-                        {if $sets.account != ''}
-                                <p class="account_p">{$sets.account}</p>
-                        {/if}
-                    </div>
-                    <div class="layui-col-xs6">
-                        {if $sets.qr_img_two != ''}<img src="{$sets.qr_img_two}" style="max-height: 180px;max-width: 100%"/>{/if}
-                        {if $sets.account_two != ''}
-                        <p class="account_p">{$sets.account}</p>
-                        {/if}
-                    </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">充值账号</label>
+        <div class="layui-input-block" style="margin-right: 50px;overflow: hidden">
+            <div class="layui-row layui-col-space5">
+                <div class="layui-col-xs6">
+                    {if $sets.qr_img != ''}<img src="{$sets.qr_img}" style="max-height: 180px;max-width: 100%"/>{/if}
+                    {if $sets.account != ''}
+                    <p class="account_p">{$sets.account}</p>
+                    {/if}
+                </div>
+                <div class="layui-col-xs6">
+                    {if $sets.qr_img_two != ''}<img src="{$sets.qr_img_two}" style="max-height: 180px;max-width: 100%"/>{/if}
+                    {if $sets.account_two != ''}
+                    <p class="account_p">{$sets.account}</p>
+                    {/if}
                 </div>
             </div>
         </div>
-        {/if}
+    </div>
+    {/if}
 
 
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
-            </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
         </div>
+    </div>
 
 
-    </form>
+</form>
 {/block}
 {block name="script"}
 <script>
@@ -82,24 +87,24 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','form','curl'],function () {
+    }).use(['index', 'form', 'curl'], function () {
         let $ = layui.jquery,
             curl = layui.curl,
             form = layui.form;
 
         let iframe = parent.layer.getFrameIndex(window.name);
-        form.on('submit(add)', function(data){
-            curl.ajax('/admin/api.order/store','post',data.field,function (res) {
-                layer.msg(res.msg);
-                if(res.status){
-                    setTimeout(function () {
-                        parent.layer.close(iframe);
-                        parent.location.reload();
-                    },1000)
-                }
-            },
+        form.on('submit(add)', function (data) {
+            curl.ajax('{:url("api.order/store")}', 'post', data.field, function (res) {
+                    layer.msg(res.msg);
+                    if (res.status) {
+                        setTimeout(function () {
+                            parent.layer.close(iframe);
+                            parent.location.reload();
+                        }, 1000)
+                    }
+                },
                 function (err) {
-                    if(err.responseJSON.code===10501){
+                    if (err.responseJSON.code === 10501) {
                         layer.msg('异常');
                     }
                 });

@@ -24,21 +24,21 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','form','curl','tree'],function () {
+    }).use(['index', 'form', 'curl', 'tree'], function () {
         let $ = layui.jquery,
             curl = layui.curl,
             tree = layui.tree,
             form = layui.form;
 
-        curl.ajax('/admin/api.permission/list','get',{id:'{$info.id}'},function (res) {
-            if(res.status){
+        curl.ajax('{:url("api.permission/list")}', 'get', {id: '{$info.id}'}, function (res) {
+            if (res.status) {
                 tree.render({
                     elem: '#tree'
-                    ,data: res.data
-                    ,showCheckbox: true
-                    ,id: 'treeClick'
+                    , data: res.data
+                    , showCheckbox: true
+                    , id: 'treeClick'
                 });
-            }else{
+            } else {
                 layer.msg(res.msg);
             }
         });
@@ -46,17 +46,17 @@
 
         let iframe = parent.layer.getFrameIndex(window.name);
 
-        form.on('submit(add)', function(data){
+        form.on('submit(add)', function (data) {
             const field = data.field;
             field.permissions = tree.getChecked('treeClick');
-            field.id='{$info.id}';
-            curl.ajax('/admin/api.role/power','post',field,function (res) {
+            field.id = '{$info.id}';
+            curl.ajax('{:url("api.role/power")}', 'post', field, function (res) {
                 layer.msg(res.msg);
-                if(res.status){
+                if (res.status) {
                     setTimeout(function () {
                         parent.layer.close(iframe);
                         parent.location.reload();
-                    },1000)
+                    }, 1000)
                 }
             });
             return false;

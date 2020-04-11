@@ -34,35 +34,34 @@ class Api
      */
     public function handle($request, Closure $next)
     {
-        $controller = $request->controller();
-        $action     = $request->action();
+        $controller = $request->controller();//当前控制器
+        $action     = $request->action();//当前方法
         $route = $controller.'/'.$action;
-        $App = App('http')->getName();
-        dump($route);
-
-        if($App == 'api'){
-            if(in_array($route,$this->no_auth_controller)){
-                return $next($request);
-            }
-
-            $msg = $this->auth();
-            if(!$msg['status']){
-                session('Message',$msg['msg']);
-                if($msg['data'] && $msg['data']=='admin' ){
-                    return redirect('/admin/login/index?type=admin');
-                }else{
-                    return redirect('/admin/login/index');
-                }
-            }else{
-                    if(!permission($route) && !in_array('admin',array_column(Auth()->roles->toArray(),'name'))){
-                        session('Message','没有权限');
-                        return redirect('/power');
-                    }
-                return $next($request);
-            }
-        }else{
+        $App = App('http')->getName();//当前应用
+        dump(1);
+//        if($App == 'api'){
+//            if(in_array($route,$this->no_auth_controller)){
+//                return $next($request);
+//            }
+//
+//            $msg = $this->auth();
+//            if(!$msg['status']){
+//                session('Message',$msg['msg']);
+//                if($msg['data'] && $msg['data']=='admin' ){
+//                    return redirect('/admin/login/index?type=admin');
+//                }else{
+//                    return redirect('/admin/login/index');
+//                }
+//            }else{
+//                    if(!permission($route) && !in_array('admin',array_column(Auth()->roles->toArray(),'name'))){
+//                        session('Message','没有权限');
+//                        return redirect('/power');
+//                    }
+//                return $next($request);
+//            }
+//        }else{
             return $next($request);
-        }
+//        }
 
     }
 

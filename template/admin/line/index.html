@@ -27,13 +27,13 @@
         base: '/layuiadmin/'
     }).extend({
         index: 'lib/index'
-    }).use(['index','table','curl'],function () {
-        let $ = layui.jquery,table = layui.table,curl = layui.curl;
+    }).use(['index', 'table', 'curl'], function () {
+        let $ = layui.jquery, table = layui.table, curl = layui.curl;
 
-        let render_table =table.render({
+        let render_table = table.render({
             elem: '#table_lay'
-            ,url:'/admin/api.line/getLineData'
-            ,parseData: function(res){
+            , url: '{:url("api.line/getLineData")}'
+            , parseData: function (res) {
                 return {
                     "code": 0,
                     "msg": res.msg,
@@ -41,40 +41,40 @@
                     "data": res.data.data
                 };
             }
-            ,page:true
-            ,limit:20
-            ,cellMinWidth: 80
-            ,cols: [[
-                {field:'id', width:80, title: 'ID', sort: true}
-                ,{field:'name', title: '名称'}
-                ,{ width:137, title: '操作',toolbar: '#barDemo'}
+            , page: true
+            , limit: 20
+            , cellMinWidth: 80
+            , cols: [[
+                {field: 'id', width: 80, title: 'ID', sort: true}
+                , {field: 'name', title: '名称'}
+                , {width: 137, title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
 
-        $('.sou').on('click',function (that) {
+        $('.sou').on('click', function (that) {
             render_table.reload({
-                where:{
-                    key:$('#key').val()
+                where: {
+                    key: $('#key').val()
                 }
             });
         });
 
 
-        table.on('tool(userTable)', function(obj){
+        table.on('tool(userTable)', function (obj) {
             let data = obj.data;
-            if(obj.event === 'edit'){
+            if (obj.event === 'edit') {
                 let index = layer.open({
-                    title:'修改'+data.name,
-                    type:2,
-                    content: ['/line/edit?id='+data.id, 'no'],
-                    area:['500px','200px'],
-                    success: function(layero, index) {
+                    title: '修改' + data.name,
+                    type: 2,
+                    content: ['{:url("line/edit")}?id=' + data.id, 'no'],
+                    area: ['500px', '200px'],
+                    success: function (layero, index) {
                     },
                 });
-            }else if (obj.event === 'del'){
-                layer.confirm('真的删除['+data.name+']?', function(index){
-                    curl.ajax('/admin/api.line/del','post',{id:data.id},function (res) {
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除[' + data.name + ']?', function (index) {
+                    curl.ajax('{:url("api.line/del")}', 'post', {id: data.id}, function (res) {
                         layer.msg(res.msg);
                     });
                     obj.del();
@@ -84,19 +84,19 @@
         });
 
         let active = {
-            AddAdmin: function(){
+            AddAdmin: function () {
                 let index = layer.open({
-                    title:'添加线路',
-                    type:2,
-                    content: ['/line/create?', 'no'],
-                    area:['500px','200px'],
-                    success: function(layero, index) {
+                    title: '添加线路',
+                    type: 2,
+                    content: ['{:url("line/create")}?', 'no'],
+                    area: ['500px', '200px'],
+                    success: function (layero, index) {
                     },
                 });
             }
         };
 
-        $('.btn_tools .layui-btn').on('click', function(){
+        $('.btn_tools .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
