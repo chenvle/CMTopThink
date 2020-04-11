@@ -19,6 +19,8 @@ CMTopThink V6.0
 
 ~~~
 git clone https://github.com/chenvle/CMTopThink.git
+或者
+git clone https://gitee.com/chenvle/CMTopThink.git
 cd CMTopThink
 composer update
 cp .example.env .env
