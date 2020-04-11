@@ -10,6 +10,7 @@ use think\db\exception\ModelNotFoundException;
 use think\facade\Env;
 use think\facade\Log;
 use think\Model;
+use think\response\Json;
 
 if (!function_exists('curl_post')) {
 
@@ -212,7 +213,7 @@ if (!function_exists('msg_success_api')) {
     /**
      * @param string $msg
      * @param array $data
-     * @return \think\response\Json
+     * @return Json
      */
     function msg_success_api($msg = '操作成功', $data = [])
     {
@@ -228,7 +229,7 @@ if (!function_exists('msg_error_api')) {
     /**
      * @param string $msg
      * @param array $data
-     * @return \think\response\Json
+     * @return Json
      */
     function msg_error_api($msg = '操作失败', $data = [])
     {
