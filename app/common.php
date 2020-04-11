@@ -208,6 +208,38 @@ if (!function_exists('msg_error')) {
         return $data;
     }
 }
+if (!function_exists('msg_success_api')) {
+    /**
+     * @param string $msg
+     * @param array $data
+     * @return \think\response\Json
+     */
+    function msg_success_api($msg = '操作成功', $data = [])
+    {
+        $data = [
+            'status' => true,
+            'msg'    => $msg,
+            'data'   => $data,
+        ];
+        return json($data);
+    }
+}
+if (!function_exists('msg_error_api')) {
+    /**
+     * @param string $msg
+     * @param array $data
+     * @return \think\response\Json
+     */
+    function msg_error_api($msg = '操作失败', $data = [])
+    {
+        $data = [
+            'status' => false,
+            'msg'    => $msg,
+            'data'   => $data,
+        ];
+        return json($data);
+    }
+}
 if (!function_exists('get_message')) {
     /**
      * @param string $name
@@ -306,7 +338,7 @@ if (!function_exists('is_Admin')) {
         if (!$user) {
             $user = Auth();
         }
-        if (!$user->roles) {
+        if (!isset($user->roles)) {
             return false;
         }
         $roles     = $user->roles->toArray();

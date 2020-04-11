@@ -23,7 +23,6 @@ class Auth
      * 不通过中间件的路由,无需登陆
      */
     protected $no_auth_controller = [
-        '',
         'login/index',
         'index/index',
         'index/welcome',
@@ -47,27 +46,28 @@ class Auth
     {
         $route = $request->pathinfo();
         $App   = App('http')->getName();
-
         if ($App == 'admin') {
             if (in_array(strtolower($route), $this->no_auth_controller)) {
                 return $next($request);
             }
-
             $msg = $this->auth();
-            if (!$msg['status']) {
-                session('Message', $msg['msg']);
-                if ($msg['data'] && $msg['data'] == 'admin') {
-                    return redirect('/admin/login/index?type=admin');
+            if (substr($route, 0, 3) != 'api') {
+                if (!$msg['status']) {
+                    session('Message', $msg['msg']);
+                    if ($msg['data'] && $msg['data'] == 'admin') {
+                        return redirect('/admin/login/index?type=admin');
+                    } else {
+                        return redirect('/admin/login/index');
+                    }
                 } else {
-                    return redirect('/admin/login/index');
-                }
-            } else {
-                if(substr($route,0,3) != 'api'){
                     if (!permission($route) && !in_array('admin', array_column(Auth()->roles->toArray(), 'name'))) {
                         session('Message', '没有权限');
                         return redirect('/admin/power');
                     }
+
+                    return $next($request);
                 }
+            } else {
                 return $next($request);
             }
         } else {
