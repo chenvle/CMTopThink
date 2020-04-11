@@ -34,11 +34,9 @@ class Api
      */
     public function handle($request, Closure $next)
     {
-        $controller = $request->controller();//当前控制器
-        $action     = $request->action();//当前方法
-        $route = $controller.'/'.$action;
+        $route = $request->pathinfo();
         $App = App('http')->getName();//当前应用
-        dump(1);
+        dump($route);
 //        if($App == 'api'){
 //            if(in_array($route,$this->no_auth_controller)){
 //                return $next($request);
