@@ -7,6 +7,7 @@ use Closure;
 use think\db\exception\DbException;
 use think\Request;
 use think\Response;
+use \think\facade\Request as RequestFacade;
 
 /**
  * Class Auth
@@ -36,7 +37,7 @@ class Api
     {
         $route = $request->pathinfo();
         $App = App('http')->getName();//当前应用
-        dump($route);
+//        dump(RequestFacade::header('host'));
 //        if($App == 'api'){
 //            if(in_array($route,$this->no_auth_controller)){
 //                return $next($request);

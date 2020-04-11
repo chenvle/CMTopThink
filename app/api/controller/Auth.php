@@ -5,7 +5,6 @@ namespace app\api\controller;
 
 use app\BaseController;
 use app\Request;
-use app\api\middleware\Api;
 
 class Auth extends BaseController
 {
@@ -13,9 +12,12 @@ class Auth extends BaseController
      * 中间件
      *
      * */
-    protected $middleware = [Api::class];
+    protected $middleware = [];
     public function login(Request $request)
     {
+
+        $info = Response()->getHeader();
+        dump($info);
         return 'ok';
     }
 }
