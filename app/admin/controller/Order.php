@@ -19,7 +19,7 @@ class Order extends BaseController
          * 中间件
          *
          * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     /**
      *后端充值
@@ -29,6 +29,7 @@ class Order extends BaseController
     {
         return view();
     }
+
     /**
      *后端提现
      * @return View
@@ -68,6 +69,7 @@ class Order extends BaseController
         }
         return view('edit', ['info' => $order]);
     }
+
     public function myMoney()
     {
         return view();

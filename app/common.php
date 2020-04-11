@@ -383,12 +383,12 @@ if (!function_exists('permission')) {
                 }
             }
         }
-        if ($name == 'Index/index') {
-            return true;
-        }
+
         if ($name && count($permissions)) {
             $permissions_name = array_column($permissions, 'name');
-            if (in_array($name, $permissions_name)) {
+            $permissions_name = array_to_lower($permissions_name);
+
+            if (in_array(strtolower($name), $permissions_name)) {
                 return true;
             } else {
                 return false;
@@ -396,6 +396,21 @@ if (!function_exists('permission')) {
         }
 
         return $permissions;
+    }
+}
+/**
+ * 转换成小写
+ */
+if (!function_exists('array_to_lower')) {
+    function array_to_lower($weChatArr)
+    {
+        foreach ($weChatArr as $key => $weChat) {
+            $byteArr2D[] = str_split(trim($weChat));
+            foreach ($byteArr2D[$key] as $byte) {
+                $byteToLowerArr2D[$key][] = ord($byte) >= 65 && ord($byte) <= 90 ? chr(ord($byte) + 32) : $byte;
+            }
+        }
+        return array_map('implode', $byteToLowerArr2D);
     }
 }
 if (!function_exists('echo_upload_api')) {
@@ -425,7 +440,7 @@ if (!function_exists('setting')) {
     function setting()
     {
         try {
-            $sets = (new \app\model\Set)->select();
+            $sets = (new \app\common\model\Set)->select();
             $info = [];
             foreach ($sets as $set) {
                 $info[$set->name] = $set->value;
@@ -576,7 +591,7 @@ if (!function_exists('sumMoney')) {
         function get_account()
         {
             try {
-                $accounts    = (new \app\model\Account)->select()->toArray();
+                $accounts    = (new \app\common\model\Account)->select()->toArray();
                 $account_ids = array_column($accounts, 'id');
                 if(count($account_ids) < 1){
                     return msg_error('目前没有刷单账号，请联系管理员');

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller\api;
 
 use app\BaseController;
@@ -15,7 +16,8 @@ class Money extends BaseController
     * 中间件
     *
     * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
+
     public function __construct(App $app)
     {
         parent::__construct($app);
@@ -25,27 +27,28 @@ class Money extends BaseController
     {
         try {
             $limit = $request->param('limit');
-            $key = $request->param('key');
-            $type = $request->param('type');
+            $key   = $request->param('key');
+            $type  = $request->param('type');
             $order = (new MoneyModel);
-            if($key){
-                $order = $order->where('title','like','%'.$key.'%');
+            if ($key) {
+                $order = $order->where('title', 'like', '%' . $key . '%');
             }
-            if(!is_Admin()){
-                $order = $order->where('user_id',Auth()->id);
+            if (!is_Admin()) {
+                $order = $order->where('user_id', Auth()->id);
             }
-            if($type){
-                $order = $order->where('model_type',$type);
+            if ($type) {
+                $order = $order->where('model_type', $type);
             }
-            $info = $order->order('id','desc')->paginate($limit);
-            return msg_success('ok',$info);
+            $info = $order->order('id', 'desc')->paginate($limit);
+            return msg_success('ok', $info);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
     }
+
     public function now()
     {
         $data = sumMoney(Auth())['data'];
-        return msg_success('刷新成功',$data);
+        return msg_success('刷新成功', $data);
     }
 }

@@ -19,21 +19,23 @@ class Role extends BaseController
      * 中间件
      *
      * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     public function index()
     {
         return view();
     }
+
     public function create()
     {
         return view();
     }
+
     public function power(Request $request)
     {
         try {
             $role_id = $request->param('id');
-            $role = (new RoleModel())->findOrEmpty($role_id);
+            $role    = (new RoleModel())->findOrEmpty($role_id);
         } catch (DataNotFoundException $e) {
             return dump($e);
         } catch (ModelNotFoundException $e) {
@@ -42,13 +44,14 @@ class Role extends BaseController
             return dump($e);
         }
 
-        return view('power',['info'=>$role]);
+        return view('power', ['info' => $role]);
     }
+
     public function edit(Request $request)
     {
         try {
             $role_id = $request->param('id');
-            $role = (new RoleModel())->findOrEmpty($role_id);
+            $role    = (new RoleModel())->findOrEmpty($role_id);
         } catch (DataNotFoundException $e) {
             return dump($e);
         } catch (ModelNotFoundException $e) {
@@ -56,6 +59,6 @@ class Role extends BaseController
         } catch (DbException $e) {
             return dump($e);
         }
-        return view('edit',['info'=>$role]);
+        return view('edit', ['info' => $role]);
     }
 }

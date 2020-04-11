@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller\api;
 
 use app\BaseController;
@@ -16,25 +17,26 @@ class Template extends BaseController
     * 中间件
     *
     * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     private $user_id;
 
     public function __construct(App $app)
     {
-        $token = session('token');
+        $token         = session('token');
         $this->user_id = getToken($token);
         parent::__construct($app);
     }
 
-    public function getTemplateData(Request $request){
+    public function getTemplateData(Request $request)
+    {
         try {
-            $limit = $request->param('limit');
+            $limit   = $request->param('limit');
             $service = (new TemplateModel);
-            $info = $service->where('user_id',$this->user_id)->order('id','desc')->paginate($limit);
-            return msg_success('ok',$info);
+            $info    = $service->where('user_id', $this->user_id)->order('id', 'desc')->paginate($limit);
+            return msg_success('ok', $info);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
     }
 
@@ -74,6 +76,7 @@ class Template extends BaseController
             return msg_error();
         }
     }
+
     public function del(Request $request)
     {
         $id = $request->param('id');

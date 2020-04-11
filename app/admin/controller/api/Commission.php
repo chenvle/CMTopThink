@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller\api;
 
 use app\BaseController;
@@ -19,7 +20,8 @@ class Commission extends BaseController
     * 中间件
     *
     * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
+
     public function __construct(App $app)
     {
         parent::__construct($app);
@@ -28,56 +30,57 @@ class Commission extends BaseController
     public function getCommissionData(Request $request)
     {
         try {
-            $limit = $request->param('limit');
-            $key = $request->param('key');
+            $limit   = $request->param('limit');
+            $key     = $request->param('key');
             $service = (new CommissionModel);
-            if($key){
-                $service = $service->where('name','like','%'.$key.'%');
+            if ($key) {
+                $service = $service->where('name', 'like', '%' . $key . '%');
             }
-            $info = $service->order('id','desc')->paginate($limit);
-            return msg_success('ok',$info);
+            $info = $service->order('id', 'desc')->paginate($limit);
+            return msg_success('ok', $info);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
     }
+
     public function store(Request $request)
     {
-        $start = $request->param('start');
-        $end = $request->param('end');
+        $start      = $request->param('start');
+        $end        = $request->param('end');
         $commission = $request->param('commission');
 
-        if((!$start && $start !== '0') || !$end || !$commission){
+        if ((!$start && $start !== '0') || !$end || !$commission) {
             return msg_error('请填写完整');
         }
 
 
-        $info = $this->check_price($start,$end);
+        $info = $this->check_price($start, $end);
 
-        if(!$info['status']){
+        if (!$info['status']) {
             return $info;
         }
 
-        $data = [
-            'start' => $start,
-            'end' => $end,
+        $data       = [
+            'start'      => $start,
+            'end'        => $end,
             'commission' => $commission,
         ];
         $service_id = (new CommissionModel)->insertGetId($data);
-        if($service_id){
+        if ($service_id) {
             return msg_success('操作成功');
-        }else{
+        } else {
             return msg_error('操作失败');
         }
     }
 
     public function update(Request $request)
     {
-        $start = $request->param('start');
-        $end = $request->param('end');
+        $start      = $request->param('start');
+        $end        = $request->param('end');
         $commission = $request->param('commission');
-        $id = $request->param('id');
+        $id         = $request->param('id');
 
-        if((!$start && $start !== '0') || !$end || !$commission){
+        if ((!$start && $start !== '0') || !$end || !$commission) {
             return msg_error('请填写完整');
         }
 
@@ -89,48 +92,48 @@ class Commission extends BaseController
             return msg_error();
         }
 
-        $info = $this->check_price($start,$end,$id);
+        $info = $this->check_price($start, $end, $id);
 
-        if(!$info['status']){
+        if (!$info['status']) {
             return $info;
         }
 
         $data = [
-            'start' => $start,
-            'end' => $end,
+            'start'      => $start,
+            'end'        => $end,
             'commission' => $commission,
         ];
 
         $info = $commission->save($data);
-        if($info){
-            return msg_success('操作成功',$info);
-        }else{
-            return msg_error('操作失败',$info);
+        if ($info) {
+            return msg_success('操作成功', $info);
+        } else {
+            return msg_error('操作失败', $info);
         }
     }
 
-    protected function check_price($start,$end,$id=false)
+    protected function check_price($start, $end, $id = false)
     {
         try {
-            if($id){
-                $start_check = (new CommissionModel)->where('start', '<=', $start)->where('end','>',$start)->where('id','<>',$id)->select();
-                $end_check = (new CommissionModel)->where('start', '<=', $end)->where('end', '>',$end)->where('id','<>',$id)->select();
-            }else{
-                $start_check = (new CommissionModel)->where('start', '<=', $start)->where('end','>',$start)->select();
-                $end_check = (new CommissionModel)->where('start', '<=', $end)->where('end', '>',$end)->select();
+            if ($id) {
+                $start_check = (new CommissionModel)->where('start', '<=', $start)->where('end', '>', $start)->where('id', '<>', $id)->select();
+                $end_check   = (new CommissionModel)->where('start', '<=', $end)->where('end', '>', $end)->where('id', '<>', $id)->select();
+            } else {
+                $start_check = (new CommissionModel)->where('start', '<=', $start)->where('end', '>', $start)->select();
+                $end_check   = (new CommissionModel)->where('start', '<=', $end)->where('end', '>', $end)->select();
             }
 
         } catch (DataNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (ModelNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
 
-        if(count($start_check) > 0 || count($end_check) > 0){
+        if (count($start_check) > 0 || count($end_check) > 0) {
             return msg_error('范围错误');
-        }else{
+        } else {
             return msg_success();
         }
     }
@@ -143,29 +146,30 @@ class Commission extends BaseController
             $role->delete();
             return msg_success();
         } catch (DataNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (ModelNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
     }
+
     public function get(Request $request)
     {
         $price = $request->param('price');
         try {
-            $commission = (new CommissionModel)->where('start', '<=', $price)->where('end', '>',$price)->select();
-            if(count($commission)){
-                return msg_success('ok',$commission[0]->commission);
-            }else{
+            $commission = (new CommissionModel)->where('start', '<=', $price)->where('end', '>', $price)->select();
+            if (count($commission)) {
+                return msg_success('ok', $commission[0]->commission);
+            } else {
                 return msg_error();
             }
         } catch (DataNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (ModelNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
 
     }

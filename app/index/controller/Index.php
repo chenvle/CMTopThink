@@ -11,7 +11,7 @@ class Index extends BaseController
     * 中间件
     *
     * */
-    protected $middleware = [Auth::class];
+        protected $middleware = [];
 
     public function index(Request $request)
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller\api;
 
 use app\BaseController;
@@ -20,7 +21,7 @@ class Role extends BaseController
     * 中间件
     *
     * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     public function __construct(App $app)
     {
@@ -31,36 +32,37 @@ class Role extends BaseController
     {
         try {
             $limit = $request->param('limit');
-            $key = $request->param('key');
+            $key   = $request->param('key');
             $roles = (new RoleModel);
-            if($key){
-                $roles = $roles->where('name','like','%'.$key.'%');
+            if ($key) {
+                $roles = $roles->where('name', 'like', '%' . $key . '%');
             }
             $info = $roles->paginate($limit);
-            return msg_success('ok',$info);
+            return msg_success('ok', $info);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
     }
+
     public function store(Request $request)
     {
         $name = $request->param('name');
         $type = $request->param('type');
-        if(!$type){
+        if (!$type) {
             return msg_error('请选择类型');
         }
-        if(!$name || strlen($name)<6 || strlen($name)>25){
+        if (!$name || strlen($name) < 6 || strlen($name) > 25) {
             return msg_error('名称必填,且长度大于4并小于25');
         }
 
-        $data = [
+        $data    = [
             'name' => $name,
             'type' => $type,
         ];
         $role_id = (new RoleModel)->insertGetId($data);
-        if($role_id){
-            return msg_success('操作成功',$role_id);
-        }else{
+        if ($role_id) {
+            return msg_success('操作成功', $role_id);
+        } else {
             return msg_error('操作失败');
         }
     }
@@ -69,22 +71,22 @@ class Role extends BaseController
     {
         $name = $request->param('name');
         $type = $request->param('type');
-        $id = $request->param('id');
+        $id   = $request->param('id');
 
         try {
             $role = (new RoleModel)->findOrFail($id);
         } catch (DataNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (ModelNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
 
         }
 
 
-        if(!$type){
+        if (!$type) {
             return msg_error('类型至少选一个');
         }
-        if(!$name || strlen($name)<6 || strlen($name)>25){
+        if (!$name || strlen($name) < 6 || strlen($name) > 25) {
             return msg_error('名称必填,且长度大于4并小于25');
         }
 
@@ -94,12 +96,13 @@ class Role extends BaseController
         ];
 
         $info = $role->save($data);
-        if($info){
-            return msg_success('操作成功',$info);
-        }else{
-            return msg_error('操作失败',$info);
+        if ($info) {
+            return msg_success('操作成功', $info);
+        } else {
+            return msg_error('操作失败', $info);
         }
     }
+
     public function del(Request $request)
     {
         $id = $request->param('id');
@@ -108,29 +111,30 @@ class Role extends BaseController
             $role->delete();
             return msg_success();
         } catch (DataNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (ModelNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
     }
+
     public function power(Request $request)
     {
-        try{
-            if($this->request->isPost()){
+        try {
+            if ($this->request->isPost()) {
                 $role_id = $this->request->param('id');
-                $role = (new RoleModel)->findOrFail($role_id);
+                $role    = (new RoleModel)->findOrFail($role_id);
 
-                $permissions = $request->param('permissions');
-                $permission_ids = array_column($permissions,'id');
+                $permissions    = $request->param('permissions');
+                $permission_ids = array_column($permissions, 'id');
                 $role->permissions()->sync($permission_ids);
                 return msg_success();
-            }else{
+            } else {
                 return msg_error('Please use POST type!');
             }
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
     }
 

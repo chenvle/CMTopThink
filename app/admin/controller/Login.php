@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller;
 
 use app\BaseController;
@@ -11,9 +12,10 @@ class Login extends BaseController
     * 中间件
     *
     * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
+
     public function index(Request $request)
     {
-        return view('index',['Message'=>get_message(),'is_admin'=>'','title'=>'CMtime晨明网络']);
+        return view('index', ['Message' => get_message(), 'is_admin' => '', 'title' => 'CMtime晨明网络']);
     }
 }

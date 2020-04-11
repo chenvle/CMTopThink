@@ -14,11 +14,11 @@ use think\db\exception\ModelNotFoundException;
 
 class Set extends BaseController
 {
-        /*
-         * 中间件
-         *
-         * */
-    protected $middleware = [Auth::class];
+    /*
+     * 中间件
+     *
+     * */
+    protected $middleware = [];
 
     public function index()
     {
@@ -32,6 +32,6 @@ class Set extends BaseController
         } catch (DbException $e) {
             dump($e);
         }
-        return view('index',['sets'=>$sets]);
+        return view('index', ['sets' => $sets]);
     }
 }

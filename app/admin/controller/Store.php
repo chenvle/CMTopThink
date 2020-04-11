@@ -18,21 +18,23 @@ class Store extends BaseController
          * 中间件
          *
          * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     public function index()
     {
         return view();
     }
+
     public function create()
     {
         return view();
     }
+
     public function edit(Request $request)
     {
         try {
             $service_id = $request->param('id');
-            $service = (new StoreModel)->findOrEmpty($service_id);
+            $service    = (new StoreModel)->findOrEmpty($service_id);
         } catch (DataNotFoundException $e) {
             return dump($e);
         } catch (ModelNotFoundException $e) {
@@ -40,6 +42,6 @@ class Store extends BaseController
         } catch (DbException $e) {
             return dump($e);
         }
-        return view('edit',['info'=>$service]);
+        return view('edit', ['info' => $service]);
     }
 }

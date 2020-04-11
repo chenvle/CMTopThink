@@ -18,7 +18,7 @@ class Money extends BaseController
      * 中间件
      *
      * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
     protected $field = [
         'title'                   => null,//费用名称
         'model_type'              => null,//费用类型
@@ -246,39 +246,39 @@ class Money extends BaseController
     {
         try {
             $moneys = (new MoneyModel)->select()->toArray();
-            $sum_1 = array_sum(array_column($moneys,'frozen_amount'));
-            $sum_2 = array_sum(array_column($moneys,'commission'));
-            $sum_3 = array_sum(array_column($moneys,'other_cost'));
-            $sum_4 = array_sum(array_column($moneys,'return_amount'));
-            $sum_5 = array_sum(array_column($moneys,'return_commission'));
-            $sum_6 = array_sum(array_column($moneys,'return_other_cost'));
-            $sum_7 = array_sum(array_column($moneys,'admin_return_amount'));
-            $sum_8 = array_sum(array_column($moneys,'admin_return_commission'));
-            $sum_9 = array_sum(array_column($moneys,'admin_return_other_cost'));
-            $sum_10 = array_sum(array_column($moneys,'recharge'));
-            $sum_11 = array_sum(array_column($moneys,'withdraw'));
-            $sum_12 = array_sum(array_column($moneys,'return_withdraw'));
-            $data=[
-                'sum_1'=>$sum_1,
-                'sum_2'=>$sum_2,
-                'sum_3'=>$sum_3,
-                'sum_4'=>$sum_4,
-                'sum_5'=>$sum_5,
-                'sum_6'=>$sum_6,
-                'sum_7'=>$sum_7,
-                'sum_8'=>$sum_8,
-                'sum_9'=>$sum_9,
-                'sum_10'=>$sum_10,
-                'sum_11'=>$sum_11,
-                'sum_12'=>$sum_12,
+            $sum_1  = array_sum(array_column($moneys, 'frozen_amount'));
+            $sum_2  = array_sum(array_column($moneys, 'commission'));
+            $sum_3  = array_sum(array_column($moneys, 'other_cost'));
+            $sum_4  = array_sum(array_column($moneys, 'return_amount'));
+            $sum_5  = array_sum(array_column($moneys, 'return_commission'));
+            $sum_6  = array_sum(array_column($moneys, 'return_other_cost'));
+            $sum_7  = array_sum(array_column($moneys, 'admin_return_amount'));
+            $sum_8  = array_sum(array_column($moneys, 'admin_return_commission'));
+            $sum_9  = array_sum(array_column($moneys, 'admin_return_other_cost'));
+            $sum_10 = array_sum(array_column($moneys, 'recharge'));
+            $sum_11 = array_sum(array_column($moneys, 'withdraw'));
+            $sum_12 = array_sum(array_column($moneys, 'return_withdraw'));
+            $data   = [
+                'sum_1'  => $sum_1,
+                'sum_2'  => $sum_2,
+                'sum_3'  => $sum_3,
+                'sum_4'  => $sum_4,
+                'sum_5'  => $sum_5,
+                'sum_6'  => $sum_6,
+                'sum_7'  => $sum_7,
+                'sum_8'  => $sum_8,
+                'sum_9'  => $sum_9,
+                'sum_10' => $sum_10,
+                'sum_11' => $sum_11,
+                'sum_12' => $sum_12,
             ];
-            return msg_success('ok',$data);
+            return msg_success('ok', $data);
         } catch (DataNotFoundException $e) {
-            return msg_error('操作异常',$e);
+            return msg_error('操作异常', $e);
         } catch (ModelNotFoundException $e) {
-            return msg_error('操作异常',$e);
+            return msg_error('操作异常', $e);
         } catch (DbException $e) {
-            return msg_error('操作异常',$e);
+            return msg_error('操作异常', $e);
         }
     }
 

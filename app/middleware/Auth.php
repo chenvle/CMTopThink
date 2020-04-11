@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace app\middleware;
 
@@ -20,11 +20,22 @@ class Auth
     protected $user;
     /**
      * @var array
-     * 不通过中间件的路由
+     * 不通过中间件的路由,无需登陆
      */
     protected $no_auth_controller = [
-        'Login/index'
+        '',
+        'login/index',
+        'index/index',
+        'index/welcome',
     ];
+    /**
+     * @var array
+     * 不通过中间件的路由,但需要登陆
+     */
+    protected $no_auth_controller_with_login = [
+
+    ];
+
     /**
      * 处理请求
      *
@@ -34,36 +45,32 @@ class Auth
      */
     public function handle($request, Closure $next)
     {
-//        $controller = $request->controller();
-//        $action     = $request->action();
-//        $route = $controller.'/'.$action;
         $route = $request->pathinfo();
-        $App = App('http')->getName();
+        $App   = App('http')->getName();
 
-
-        if($App == 'admin'){
-            if(in_array($route,$this->no_auth_controller)){
+        if ($App == 'admin') {
+            if (in_array(strtolower($route), $this->no_auth_controller)) {
                 return $next($request);
             }
 
             $msg = $this->auth();
-            if(!$msg['status']){
-                session('Message',$msg['msg']);
-                if($msg['data'] && $msg['data']=='admin' ){
+            if (!$msg['status']) {
+                session('Message', $msg['msg']);
+                if ($msg['data'] && $msg['data'] == 'admin') {
                     return redirect('/admin/login/index?type=admin');
-                }else{
+                } else {
                     return redirect('/admin/login/index');
                 }
-            }else{
-//                if(substr($controller,0,3) != 'api'){
-                    if(!permission($route) && !in_array('admin',array_column(Auth()->roles->toArray(),'name'))){
-                        session('Message','没有权限');
-                        return redirect('/power');
+            } else {
+                if(substr($route,0,3) != 'api'){
+                    if (!permission($route) && !in_array('admin', array_column(Auth()->roles->toArray(), 'name'))) {
+                        session('Message', '没有权限');
+                        return redirect('/admin/power');
                     }
-//                }
+                }
                 return $next($request);
             }
-        }else{
+        } else {
             return $next($request);
         }
 
@@ -76,21 +83,21 @@ class Auth
     {
         try {
             $token = session('token');
-            if(!$token){
-                return msg_error('请登录',false);
+            if (!$token) {
+                return msg_error('请登录', false);
             }
             $user_id = getToken($token);
-            if(!is_numeric($user_id)){
-                return msg_error('异常',false);
+            if (!is_numeric($user_id)) {
+                return msg_error('异常', false);
             }
             $this->user = \app\common\model\User::find($user_id);
-            if($this->user->frozen == 1){
-                return msg_error('账户异常',false);
+            if ($this->user->frozen == 1) {
+                return msg_error('账户异常', false);
             }
-            if(is_Admin($this->user)){
-                return msg_success('管理员','admin');
+            if (is_Admin($this->user)) {
+                return msg_success('管理员', 'admin');
             }
-            return msg_success('会员','user');
+            return msg_success('会员', 'user');
         } catch (DbException $e) {
             return msg_error('异常');
         }

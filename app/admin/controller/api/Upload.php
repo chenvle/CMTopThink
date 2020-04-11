@@ -15,14 +15,14 @@ class Upload extends BaseController
     * 中间件
     *
     * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     public function img(Request $request)
     {
         try {
-            $file = request()->file('file');
-            $saveName = Filesystem::putFile( '/upload/', $file);
-            return echo_upload_api('/'.$saveName);
+            $file     = request()->file('file');
+            $saveName = Filesystem::putFile('/upload/', $file);
+            return echo_upload_api('/' . $saveName);
         } catch (DbException $e) {
             return msg_error($e);
         }

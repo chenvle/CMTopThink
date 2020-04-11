@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller\api;
 
 use app\BaseController;
@@ -46,9 +47,10 @@ class Login extends BaseController
             return msg_error('Please use POST type!');
         }
     }
+
     public function logout()
     {
-        session('token',null);
+        session('token', null);
         return msg_success('退出成功');
     }
 

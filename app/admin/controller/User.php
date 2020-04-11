@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller;
 
 use app\BaseController;
@@ -17,39 +18,41 @@ class User extends BaseController
      * 中间件
      *
      * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     public function index()
     {
         return view();
     }
+
     public function admin()
     {
         return view();
     }
+
     public function create(Request $request)
     {
         $type = $request->param('type');
         try {
             $admin_roles = (new RoleModel)->where('type', $type)->select();
         } catch (DataNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (ModelNotFoundException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         } catch (DbException $e) {
-            return msg_error('异常',$e);
+            return msg_error('异常', $e);
         }
-        return view('create',['roles'=>$admin_roles]);
+        return view('create', ['roles' => $admin_roles]);
     }
 
     public function edit(Request $request)
     {
         try {
             $user_id = $request->param('id');
-            $type = $request->param('type');
-            $user = (new UserModel)->with('roles')->findOrEmpty($user_id);
-            if(!$user){
-               return dump($user);
+            $type    = $request->param('type');
+            $user    = (new UserModel)->with('roles')->findOrEmpty($user_id);
+            if (!$user) {
+                return dump($user);
             }
             $admin_roles = (new RoleModel)->where('type', $type)->select();
         } catch (DataNotFoundException $e) {
@@ -59,7 +62,7 @@ class User extends BaseController
         } catch (DbException $e) {
             return dump($e);
         }
-        return view('edit',['roles'=>$admin_roles,'info'=>$user]);
+        return view('edit', ['roles' => $admin_roles, 'info' => $user]);
     }
 
 }

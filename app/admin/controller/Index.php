@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller;
 
 use app\BaseController;
@@ -13,25 +14,25 @@ class Index extends BaseController
      * 中间件
      *
      * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     public function index()
     {
         $notice_login = session('notice');
-        session('notice',false);
+        session('notice', false);
         $notice = false;
-        if($notice_login){
+        if ($notice_login) {
             try {
-                $notice = (new \app\common\model\Notice)->order('id','desc')->select()->filter(function ($item){
-                    if(time() >= strtotime($item->start_time) && time() <= strtotime($item->end_time)){
+                $notice = (new \app\common\model\Notice)->order('id', 'desc')->select()->filter(function ($item) {
+                    if (time() >= strtotime($item->start_time) && time() <= strtotime($item->end_time)) {
                         return $item;
-                    }else{
+                    } else {
                         return false;
                     }
                 });
-                if(count($notice)){
+                if (count($notice)) {
                     $notice = $notice[0];
-                }else{
+                } else {
                     $notice = false;
                 }
             } catch (DataNotFoundException $e) {
@@ -43,8 +44,8 @@ class Index extends BaseController
             }
         }
         $menus = Menus();
-        $data = sumMoney(Auth())['data'];
-        return view('index',['menus' =>$menus, 'notice' =>$notice, 'money' => $data]);
+        $data  = sumMoney(Auth())['data'];
+        return view('index', ['menus' => $menus, 'notice' => $notice, 'money' => $data]);
     }
 
     public function welcome()

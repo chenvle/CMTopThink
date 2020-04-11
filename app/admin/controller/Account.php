@@ -19,12 +19,13 @@ class Account extends BaseController
          * 中间件
          *
          * */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     public function index()
     {
         return view();
     }
+
     public function create()
     {
         try {
@@ -36,18 +37,20 @@ class Account extends BaseController
         } catch (DbException $e) {
             dump($e);
         }
-        return view('create',['groups'=>$groups]);
+        return view('create', ['groups' => $groups]);
     }
+
     public function group()
     {
         return view();
     }
+
     public function edit(Request $request)
     {
         try {
             $service_id = $request->param('id');
-            $service = (new AccountModel)->findOrEmpty($service_id);
-            $groups = (new AccountGroupModel)->select();
+            $service    = (new AccountModel)->findOrEmpty($service_id);
+            $groups     = (new AccountGroupModel)->select();
         } catch (DataNotFoundException $e) {
             return dump($e);
         } catch (ModelNotFoundException $e) {
@@ -55,6 +58,6 @@ class Account extends BaseController
         } catch (DbException $e) {
             return dump($e);
         }
-        return view('edit',['info'=>$service,'groups'=>$groups]);
+        return view('edit', ['info' => $service, 'groups' => $groups]);
     }
 }

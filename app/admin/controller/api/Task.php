@@ -19,7 +19,7 @@ class Task extends Money
      * 中间件
      * @var array
      */
-    protected $middleware = [Auth::class];
+    protected $middleware = [];
 
     private $user_id;
 
@@ -41,14 +41,14 @@ class Task extends Money
             }
             if (!is_Admin()) {
                 $where['user_id'] = $this->user_id;
-            }elseif($status==3){
+            } elseif ($status == 3) {
                 unset($where['status']);
-                $status = [3,4];
+                $status = [3, 4];
             }
             $tasks = (new TaskModel)->with(['line', 'store']);
             $tasks = $tasks->where($where);
-            if(is_Admin() && is_array($status)){
-                $tasks = $tasks->whereIn('status',$status);
+            if (is_Admin() && is_array($status)) {
+                $tasks = $tasks->whereIn('status', $status);
             }
             $tasks = $tasks->order('id', 'desc')->paginate($limit);
             return msg_success('ok', $tasks);
@@ -87,9 +87,9 @@ class Task extends Money
 
 
         if (isset($data['title']) && $data['title']) {
-            if(isset($data['id'])){
-                $task = (new TemplateModel)->update($data,['id'=>$data['id']]);
-            }else{
+            if (isset($data['id'])) {
+                $task = (new TemplateModel)->update($data, ['id' => $data['id']]);
+            } else {
                 $task = (new TemplateModel)->create($data);
             }
 
@@ -119,24 +119,24 @@ class Task extends Money
      */
     public function cancel(Request $request)
     {
-        $id     = $request->param('id');
+        $id = $request->param('id');
 
         try {
             $task = (new TaskModel)->find($id);
             if (is_Admin()) {
-                $remark = $request->param('remark');
-                $task->cancel_type = 'admin';
+                $remark             = $request->param('remark');
+                $task->cancel_type  = 'admin';
                 $task->admin_remark = $remark;
                 $task->status       = task_status('异常');
-                $info =  $this->createMoney(5,null,$task);
+                $info               = $this->createMoney(5, null, $task);
             } else {
                 $task->cancel_type = 'user';
-                $task->status       = task_status('已取消');
-                $info =  $this->createMoney(6,null,$task);
+                $task->status      = task_status('已取消');
+                $info              = $this->createMoney(6, null, $task);
             }
-            if($info['status']){
+            if ($info['status']) {
                 $task->save();
-            }else{
+            } else {
                 return $info;
             }
             return msg_success();
@@ -148,6 +148,7 @@ class Task extends Money
             return msg_error('异常', $e);
         }
     }
+
     /**
      * 接受任务/完成任务
      * @param Request $request
@@ -155,13 +156,13 @@ class Task extends Money
      */
     public function taskPass(Request $request)
     {
-        $id     = $request->param('id');
-        $status     = $request->param('status');
-        $shop_order_id     = $request->param('shop_order_id');
+        $id            = $request->param('id');
+        $status        = $request->param('status');
+        $shop_order_id = $request->param('shop_order_id');
         try {
-            $task = (new TaskModel)->find($id);
-            $task->status       = task_status($status);
-            $task->shop_order_id       = $shop_order_id;
+            $task                = (new TaskModel)->find($id);
+            $task->status        = task_status($status);
+            $task->shop_order_id = $shop_order_id;
             $task->save();
             return msg_success();
         } catch (DataNotFoundException $e) {
