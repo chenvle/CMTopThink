@@ -26,6 +26,7 @@ class Api
     protected $no_auth_controller = [
         'power/index',
         'power',
+        'login',
     ];
 
     /**
@@ -37,6 +38,10 @@ class Api
      */
     public function handle($request, Closure $next)
     {
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Methods:*');
+        header('Access-Control-Allow-Headers:*');
+
         $route = $request->pathinfo();
         $App   = App('http')->getName();//当前应用
         $token = RequestFacade::header('token');
@@ -46,7 +51,7 @@ class Api
         }
 
         if ($token != env('api_key')) {
-            return redirect('/api/power?type=秘钥没有授权');
+//            return redirect('/api/power?type=秘钥没有授权');
         }
         return $next($request);
     }

@@ -5,6 +5,7 @@ namespace app;
 
 use think\App;
 use think\exception\ValidateException;
+use think\facade\Request as RequestFacade;
 use think\Validate;
 
 /**
@@ -37,6 +38,22 @@ abstract class ApiBaseController
     protected $middleware = [];
 
     /**
+     * 应用秘钥
+     * */
+    protected $api_key = false;
+    /**
+     * 用户token
+     * @var bool
+     */
+    protected $token = false;
+
+    /**
+     * 用户token
+     * @var bool
+     */
+    protected $user = false;
+
+    /**
      * 构造方法
      * @access public
      * @param  App  $app  应用对象
@@ -54,12 +71,10 @@ abstract class ApiBaseController
     // 初始化
     protected function initialize()
     {
-//        $route = request()->pathinfo();
-//        $App = App('http')->getName();
-//        if($App != 'api'){
-//            return msg_error();
-//        }
-//        var_dump(request()->pathinfo());
+        $this->api_key = env('api_key');
+        $this->token = RequestFacade::header('Authorization');
+        $this->user = Auth($this->token);
+
     }
 
     /**

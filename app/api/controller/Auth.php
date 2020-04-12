@@ -21,6 +21,9 @@ class Auth extends ApiBaseController
     public function login(Request $request)
     {
         if ($this->request->isPost()) {
+            if($this->api_key !== RequestFacade::header('ApplicationID')){
+                return msg_error_api('秘钥没有授权');
+            }
             $username = $this->request->param('username');
             $password = $this->request->param('password');
             if (!trim($username) || !$password) {
@@ -36,9 +39,7 @@ class Auth extends ApiBaseController
                         return msg_error_api('账户异常');
                     } else {
                         $token = makeToken($c_user->id);
-                        session('token', $token);
-                        session('notice', true);
-                        return msg_success_api('登录成功');
+                        return msg_success_api('登录成功','',$token);
                     }
                 }
             } catch (DataNotFoundException $e) {

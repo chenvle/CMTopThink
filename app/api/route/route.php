@@ -3,4 +3,5 @@
 
 use think\facade\Route;
 
-Route::rule('login','Auth/login');
+Route::post('login','Auth/login');
+Route::get('menus','Index/menus');

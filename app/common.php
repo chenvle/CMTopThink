@@ -212,15 +212,17 @@ if (!function_exists('msg_error')) {
 if (!function_exists('msg_success_api')) {
     /**
      * @param string $msg
+     * @param null $token
      * @param array $data
      * @return Json
      */
-    function msg_success_api($msg = '操作成功', $data = [])
+    function msg_success_api($msg = '操作成功',$data = [],$token=null)
     {
         $data = [
             'status' => true,
             'msg'    => $msg,
             'data'   => $data,
+            'token'=>$token
         ];
         return json($data);
     }
@@ -355,12 +357,18 @@ if (!function_exists('is_Admin')) {
 if (!function_exists('Auth')) {
     /**
      * 当前用户
+     * @param bool $token
      * @return array|Model
      */
-    function Auth()
+    function Auth($token = false)
     {
-        $token = session('token');
-        $id    = getToken($token);
+        if(!$token){
+            $token = session('token');
+            $id    = getToken($token);
+        }else{
+            $id = getToken($token);
+        }
+
         try {
             $user = (new app\common\model\User)->find($id);
         } catch (DataNotFoundException $e) {
@@ -377,11 +385,12 @@ if (!function_exists('Auth')) {
 if (!function_exists('Menus')) {
     /**
      * 当前用户
+     * @param bool $user
      * @return array|Model
      */
-    function Menus()
+    function Menus($user = false)
     {
-        if (is_Admin(Auth())) {
+        if (is_Admin($user?$user:Auth())) {
             $menus = config('menus');
         } else {
             $menus = config('userMenus');
@@ -650,4 +659,35 @@ if (!function_exists('sumMoney')) {
             Log::info($msg);
         }
     }
+    /**
+     * Api认证
+     */
+    if (!function_exists('api_auth')) {
+        function api_auth($token)
+        {
+            $user_id = getToken($token);
+            if (!is_numeric($user_id)) {
+                return msg_error('异常', false);
+            }
+            try {
+                $user = \app\common\model\User::find($user_id);
+            } catch (DataNotFoundException $e) {
+                return msg_error('账户异常', false);
+            } catch (ModelNotFoundException $e) {
+                return msg_error('账户异常', false);
+            } catch (DbException $e) {
+                return msg_error('账户异常', false);
+            }
+            if ($user->frozen == 1) {
+                return msg_error('账户异常', false);
+            }
+            return msg_success('会员', 'user');
+        }
+    }
 }
+
+
+
+
+
+
