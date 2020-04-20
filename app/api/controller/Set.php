@@ -34,6 +34,32 @@ class Set extends ApiBaseController
             $set->save(['value'=>$value]);
         }
         return msg_success_api();
+    }
+    public function get()
+    {
 
+        /**
+         * Api认证
+         */
+        $api_auth = api_auth($this->token);
+        if (!$api_auth['status']) {
+            return json($api_auth);
+        }
+
+        try {
+            $sets = (new SetModel)->select();
+            $info = [];
+            foreach ($sets as $set)
+            {
+                $info[$set['name']]=$set['value'];
+            }
+        } catch (DataNotFoundException $e) {
+            return msg_error_api();
+        } catch (ModelNotFoundException $e) {
+            return msg_error_api();
+        } catch (DbException $e) {
+            return msg_error_api();
+        }
+        return msg_success_api('ok',$info);
     }
 }

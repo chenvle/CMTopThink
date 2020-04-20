@@ -39,7 +39,7 @@ class Auth extends ApiBaseController
                         return msg_error_api('账户异常');
                     } else {
                         $token = makeToken($c_user->id);
-                        return msg_success_api('登录成功','',$token);
+                        return msg_success_api('登录成功',  $c_user,$token);
                     }
                 }
             } catch (DataNotFoundException $e) {
@@ -52,5 +52,18 @@ class Auth extends ApiBaseController
         } else {
             return msg_error_api('Please use POST type!');
         }
+    }
+
+    public function user()
+    {
+        /**
+         * Api认证
+         */
+        $api_auth = api_auth($this->token);
+        if (!$api_auth['status']) {
+            return json($api_auth);
+        }
+        return msg_success_api('ok',$api_auth['data']);
+
     }
 }

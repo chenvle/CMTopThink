@@ -687,7 +687,7 @@ if (!function_exists('sumMoney')) {
             if ($user->frozen == 1) {
                 return msg_error('账户异常', false);
             }
-            return msg_success('会员', 'user');
+            return msg_success('会员', $user);
         }
     }
 }
