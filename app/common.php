@@ -665,6 +665,12 @@ if (!function_exists('sumMoney')) {
     if (!function_exists('api_auth')) {
         function api_auth($token)
         {
+            header('Content-Type: application/json;charset=utf-8');
+            header('Access-Control-Allow-Origin:*'); // *代表允许任何网址请求
+            header('Access-Control-Allow-Methods:*'); // 允许请求的类型
+            header('Access-Control-Allow-Credentials: true'); // 设置是否允许发送 cookies
+            header('Access-Control-Allow-Headers: *'); // 设置允许自定义请求头的字段
+
             $user_id = getToken($token);
             if (!is_numeric($user_id)) {
                 return msg_error('异常', false);

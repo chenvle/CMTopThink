@@ -18,49 +18,22 @@ class Set extends ApiBaseController
 
     public function update(Request $request)
     {
+
         /**
          * Api认证
          */
         $api_auth = api_auth($this->token);
-        if(!$api_auth['status']){return $api_auth;}
-
-        $account     = $request->param('account');
-        $qr_img      = $request->param('qr_img');
-        $account_two = $request->param('account_two');
-        $qr_img_two  = $request->param('qr_img_two');
-        $rate        = $request->param('rate');
-
-        try {
-            $sets = (new SetModel)->select()->toArray();
-
-        } catch (DataNotFoundException $e) {
-            return msg_error('异常', $e);
-        } catch (ModelNotFoundException $e) {
-            return msg_error('异常', $e);
-        } catch (DbException $e) {
-            return msg_error('异常', $e);
+        if (!$api_auth['status']) {
+            return json($api_auth);
         }
 
-        $set = new SetModel;
-        foreach ($sets as $index => $value) {
-            if ($value['name'] == 'account') {
-                $sets[$index]['value'] = $account;
-            }
-            if ($value['name'] == 'qr_img') {
-                $sets[$index]['value'] = $qr_img;
-            }
-            if ($value['name'] == 'account_two') {
-                $sets[$index]['value'] = $account_two;
-            }
-            if ($value['name'] == 'qr_img_two') {
-                $sets[$index]['value'] = $qr_img_two;
-            }
-            if ($value['name'] == 'rate') {
-                $sets[$index]['value'] = $rate;
-            }
+        $data = input();
+
+        foreach ($data as $key => $value) {
+            $set = SetModel::where('name',$key)->find();
+            $set->save(['value'=>$value]);
         }
-        $set->saveAll($sets);
-        return msg_success();
+        return msg_success_api();
 
     }
 }
