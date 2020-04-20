@@ -1,32 +1,29 @@
 <?php
 
-namespace app\admin\controller\api;
 
-use app\BaseController;
-use app\middleware\Auth;
+namespace app\api\controller;
+
+
+use app\ApiBaseController;
 use app\common\model\Set as SetModel;
 use app\Request;
 use think\App;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
+use think\facade\Request as RequestFacade;
 
-class Set extends BaseController
+class Set extends ApiBaseController
 {
-    /*
-    * 中间件
-    *
-    * */
-    protected $middleware = [];
-
-    public function __construct(App $app)
-    {
-        parent::__construct($app);
-    }
-
 
     public function update(Request $request)
     {
+        /**
+         * Api认证
+         */
+        $api_auth = api_auth($this->token);
+        if(!$api_auth['status']){return $api_auth;}
+
         $account     = $request->param('account');
         $qr_img      = $request->param('qr_img');
         $account_two = $request->param('account_two');
@@ -64,5 +61,6 @@ class Set extends BaseController
         }
         $set->saveAll($sets);
         return msg_success();
+
     }
 }
